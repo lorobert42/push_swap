@@ -15,10 +15,10 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-int ft_is_sorted(const int *a, int len)
+int	ft_is_sorted(const int *a, int len)
 {
-	int i;
-	int max;
+	int	i;
+	int	max;
 
 	max = 0;
 	i = 0;
@@ -32,10 +32,10 @@ int ft_is_sorted(const int *a, int len)
 	return (1);
 }
 
-void    ft_sort_3(int *a, int len)
+void	ft_sort_3(int *a, int len)
 {
-    if (ft_is_sorted(a, len))
-        return ;
+	if (ft_is_sorted(a, len))
+		return ;
 	if (a[0] < a[1] && a[0] < a[2] && a[1] > a[2])
 		ft_printf("sa\nra\n");
 	else if (a[0] > a[1] && a[0] < a[2] && a[1] < a[2])
@@ -52,22 +52,22 @@ void	ft_sort(int *a, int len)
 {
 	int	**b;
 
-    if (len == 1)
-        return ;
-    else if (len == 2)
-    {
-        if (a[0] > a[1])
-            ft_printf("sa\n");
-        return ;
-    }
-    else if (len == 3)
-        return (ft_sort_3(a, len));
+	if (len == 1)
+		return ;
+	else if (len == 2)
+	{
+		if (a[0] > a[1])
+			ft_printf("sa\n");
+		return ;
+	}
+	else if (len == 3)
+		return (ft_sort_3(a, len));
 	b = malloc(sizeof(int) * len);
 	if (!b)
 		return ;
 }
 
-int *parse_args(int argc, char **argv)
+int	*parse_args(int argc, char **argv)
 {
 	int	*a;
 	int	i;
@@ -92,10 +92,10 @@ int *parse_args(int argc, char **argv)
 	return (a);
 }
 
-int *parse_string(char *s, int *len)
+int	*parse_string(char *s, int *len)
 {
 	int		*a;
-	int 	i;
+	int		i;
 	char	**strs;
 
 	strs = ft_split(s, ' ');
@@ -126,7 +126,7 @@ int *parse_string(char *s, int *len)
 int	main(int argc, char **argv)
 {
 	int	*a;
-	int len;
+	int	len;
 
 	if (argc == 1)
 	{
