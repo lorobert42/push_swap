@@ -15,4 +15,6 @@
 
 # include "libft/libft.h"
 
+void	ft_sort(int *a, int len);
+
 #endif
