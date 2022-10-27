@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-int ft_is_sorted(int *a, int len)
+int ft_is_sorted(const int *a, int len)
 {
 	int i;
 	int max;
@@ -67,29 +67,80 @@ void	ft_sort(int *a, int len)
 		return ;
 }
 
-int	main(int argc, char **argv)
+int *parse_args(int argc, char **argv)
 {
 	int	*a;
 	int	i;
+
+	a = malloc(sizeof(int) * (argc - 1));
+	if (!a)
+	{
+		printf("Error\n");
+		return (NULL);
+	}
+	i = 0;
+	while (i < argc - 1)
+	{
+		a[i] = ft_atoi(argv[i + 1]);
+		if (ft_strncmp(ft_itoa(a[i]), argv[i + 1], ft_strlen(argv[i + 1])))
+		{
+			ft_printf("Error\n");
+			return (NULL);
+		}
+		i++;
+	}
+	return (a);
+}
+
+int *parse_string(char *s, int *len)
+{
+	int		*a;
+	int 	i;
+	char	**strs;
+
+	strs = ft_split(s, ' ');
+	i = 0;
+	while (strs[i])
+		i++;
+	*len = i;
+	a = malloc(sizeof(int) * i);
+	if (!a)
+	{
+		printf("Error\n");
+		return (NULL);
+	}
+	i--;
+	while (i >= 0)
+	{
+		a[i] = ft_atoi(strs[i]);
+		if (ft_strncmp(ft_itoa(a[i]), strs[i], ft_strlen(strs[i])))
+		{
+			ft_printf("Error\n");
+			return (NULL);
+		}
+		i--;
+	}
+	return (a);
+}
+
+int	main(int argc, char **argv)
+{
+	int	*a;
+	int len;
 
 	if (argc == 1)
 	{
 		ft_printf("Error\n");
 		return (0);
 	}
-	a = malloc(sizeof(int) * (argc - 1));
+	len = argc - 1;
+	if (argc == 2 && ft_strchr(argv[1], ' '))
+		a = parse_string(argv[1], &len);
+	else
+		a = parse_args(argc, argv);
 	if (!a)
-	{
-		printf("Error\n");
 		return (0);
-	}
-	i = 1;
-	while (i < argc)
-	{
-		a[i - 1] = ft_atoi(argv[i]);
-		i++;
-	}
-	ft_sort(a, argc - 1);
+	ft_sort(a, len);
 	free(a);
 	return (0);
 }
