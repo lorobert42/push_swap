@@ -24,7 +24,7 @@ static int	ft_is_sorted(t_list **a, char direction)
 	tmp = *a;
 	while (tmp)
 	{
-		if ((direction == '<' && get_c(tmp) < max) ||
+		if ((direction == '<' && get_c(tmp) < max) || \
 		(direction == '>' && get_c(tmp) > max))
 			return (0);
 		max = get_c(tmp);
@@ -52,9 +52,7 @@ static void	ft_sort_large(t_list **a)
 				ft_swap(a, "sa\n");
 			}
 			else
-			{
 				ft_push(&b, a, "pb\n");
-			}
 		}
 	}
 	while (b)
