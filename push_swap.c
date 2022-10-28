@@ -15,71 +15,79 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-static int	*parse_args(int argc, char **argv)
+static int	parse_args(int argc, char **argv, t_list **a)
 {
-	int	*a;
 	int	i;
+	int	tmp;
+	int	*content;
 
-	a = malloc(sizeof(int) * (argc - 1));
-	if (!a)
-		return (NULL);
 	i = 0;
 	while (i < argc - 1)
 	{
-		a[i] = ft_atoi(argv[i + 1]);
-		if (ft_strncmp(ft_itoa(a[i]), argv[i + 1], ft_strlen(argv[i + 1])))
-			return (NULL);
+		tmp = ft_atoi(argv[i + 1]);
+		if (ft_strncmp(ft_itoa(tmp), argv[i + 1], ft_strlen(argv[i + 1])))
+			return (0);
+		content = malloc(sizeof(int));
+		*content = tmp;
+		if (!(*a)->content)
+			(*a)->content = content;
+		else
+			ft_lstadd_back(a, ft_lstnew(content));
 		i++;
 	}
-	return (a);
+	return (i);
 }
 
-static int	*parse_string(char *s, int *len)
+static int	parse_string(char *s, t_list **a)
 {
-	int		*a;
 	int		i;
 	char	**strs;
+	int		tmp;
+	int		*content;
 
 	strs = ft_split(s, ' ');
 	i = 0;
 	while (strs[i])
-		i++;
-	*len = i;
-	a = malloc(sizeof(int) * i);
-	if (!a)
-		return (NULL);
-	i--;
-	while (i >= 0)
 	{
-		a[i] = ft_atoi(strs[i]);
-		if (ft_strncmp(ft_itoa(a[i]), strs[i], ft_strlen(strs[i])))
-			return (NULL);
-		i--;
+		tmp = ft_atoi(strs[i]);
+		if (ft_strncmp(ft_itoa(tmp), strs[i], ft_strlen(strs[i])))
+			return (0);
+		content = malloc(sizeof(int));
+		*content = tmp;
+		if (!(*a)->content)
+			(*a)->content = content;
+		else
+			ft_lstadd_back(a, ft_lstnew(content));
+		i++;
 	}
-	return (a);
+	return (i);
+}
+
+void	ft_error(t_list **a)
+{
+	ft_printf("Error\n");
+	if (a)
+		ft_lstclear(a, &ft_del);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
-	int	*a;
-	int	len;
+	t_list	*a;
+	int		len;
 
 	if (argc == 1)
-	{
-		ft_printf("Error\n");
-		return (0);
-	}
-	len = argc - 1;
-	if (argc == 2 && ft_strchr(argv[1], ' '))
-		a = parse_string(argv[1], &len);
-	else
-		a = parse_args(argc, argv);
+		ft_error(NULL);
+	a = ft_lstnew(NULL);
 	if (!a)
-	{
-		ft_printf("Error\n");
-		return (0);
-	}
-	ft_sort(a, len);
-	free(a);
+		ft_error(NULL);
+	if (argc == 2 && ft_strchr(argv[1], ' '))
+		len = parse_string(argv[1], &a);
+	else
+		len = parse_args(argc, argv, &a);
+	if (!len)
+		ft_error(&a);
+	ft_sort(&a, len);
+	ft_lstclear(&a, &ft_del);
 	return (0);
 }

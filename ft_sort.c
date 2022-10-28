@@ -13,55 +13,58 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-static int	ft_is_sorted(const int *a, int len)
+static int	ft_is_sorted(t_list **a)
 {
-	int	i;
-	int	max;
+	t_list	*tmp;
+	int		max;
 
 	max = 0;
-	i = 0;
-	while (i < len)
+	tmp = *a;
+	while (tmp)
 	{
-		if (a[i] < max)
+		if (get_c(tmp) < max)
 			return (0);
-		max = a[i];
-		i++;
+		max = get_c(tmp);
+		tmp = tmp->next;
 	}
 	return (1);
 }
 
-static void	ft_sort_3(int *a, int len)
+static void	ft_sort_3(t_list **a)
 {
-	if (ft_is_sorted(a, len))
+	if (ft_is_sorted(a))
 		return ;
-	if (a[0] < a[1] && a[0] < a[2] && a[1] > a[2])
-		ft_printf("sa\nra\n");
-	else if (a[0] > a[1] && a[0] < a[2] && a[1] < a[2])
-		ft_printf("sa\n");
-	else if (a[0] < a[1] && a[0] > a[2] && a[1] > a[2])
-		ft_printf("rra\n");
-	else if (a[0] > a[1] && a[0] > a[2] && a[1] < a[2])
-		ft_printf("ra\n");
-	else if (a[0] > a[1] && a[0] > a[2] && a[1] > a[2])
-		ft_printf("sa\nrra\n");
+	if (get_c(*a) < get_c((*a)->next))
+	{
+		if (get_c(*a) < get_c(ft_lstlast(*a)))
+			ft_printf("sa\nra\n");
+		else
+			ft_printf("rra\n");
+	}
+	else
+	{
+		if (get_c(*a) < get_c(ft_lstlast(*a)))
+			ft_printf("sa\n");
+		else
+		{
+			if (get_c((*a)->next) < get_c(ft_lstlast(*a)))
+				ft_printf("ra\n");
+			else
+				ft_printf("sa\nrra\n");
+		}
+	}
 }
 
-void	ft_sort(int *a, int len)
+void	ft_sort(t_list **a, int len)
 {
-	int	**b;
-
 	if (len == 1)
 		return ;
 	else if (len == 2)
 	{
-		if (a[0] > a[1])
+		if (get_c(*a) > get_c((*a)->next))
 			ft_printf("sa\n");
 		return ;
 	}
 	else if (len == 3)
-		return (ft_sort_3(a, len));
-	b = malloc(sizeof(int) * len);
-	if (!b)
-		return ;
-	free(b);
+		return (ft_sort_3(a));
 }

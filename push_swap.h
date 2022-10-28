@@ -15,6 +15,8 @@
 
 # include "libft/libft.h"
 
-void	ft_sort(int *a, int len);
+void	ft_sort(t_list **a, int len);
+int		get_c(t_list *a);
+void	ft_del(void *content);
 
 #endif
