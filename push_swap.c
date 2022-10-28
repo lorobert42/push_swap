@@ -15,12 +15,14 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-static int	parse_args(int argc, char **argv, t_list **a)
+static int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
 {
 	int	i;
 	int	tmp;
 	int	*content;
 
+	sorted->tab = malloc(sizeof(int) * (argc - 1));
+	sorted->size = argc - 1;
 	i = 0;
 	while (i < argc - 1)
 	{
@@ -33,12 +35,14 @@ static int	parse_args(int argc, char **argv, t_list **a)
 			(*a)->content = content;
 		else
 			ft_lstadd_back(a, ft_lstnew(content));
+		sorted->tab[i] = tmp;
 		i++;
 	}
+	ft_sort_tab(sorted);
 	return (i);
 }
 
-static int	parse_string(char *s, t_list **a)
+static int	parse_string(char *s, t_list **a, t_tab *sorted)
 {
 	int		i;
 	char	**strs;
@@ -46,6 +50,11 @@ static int	parse_string(char *s, t_list **a)
 	int		*content;
 
 	strs = ft_split(s, ' ');
+	i = 0;
+	while (strs[i++])
+		continue ;
+	sorted->tab = malloc(sizeof(int) * (i));
+	sorted->size = i;
 	i = 0;
 	while (strs[i])
 	{
@@ -58,8 +67,10 @@ static int	parse_string(char *s, t_list **a)
 			(*a)->content = content;
 		else
 			ft_lstadd_back(a, ft_lstnew(content));
+		sorted->tab[i] = tmp;
 		i++;
 	}
+	ft_sort_tab(sorted);
 	return (i);
 }
 
@@ -74,6 +85,7 @@ void	ft_error(t_list **a)
 int	main(int argc, char **argv)
 {
 	t_list	*a;
+	t_tab 	sorted;
 	int		len;
 
 	if (argc == 1)
@@ -81,13 +93,15 @@ int	main(int argc, char **argv)
 	a = ft_lstnew(NULL);
 	if (!a)
 		ft_error(NULL);
+	sorted.size = 0;
+	sorted.tab = NULL;
 	if (argc == 2 && ft_strchr(argv[1], ' '))
-		len = parse_string(argv[1], &a);
+		len = parse_string(argv[1], &a, &sorted);
 	else
-		len = parse_args(argc, argv, &a);
+		len = parse_args(argc, argv, &a, &sorted);
 	if (!len)
 		ft_error(&a);
-	ft_sort(&a, len);
+	ft_sort(&a, len, &sorted);
 	ft_lstclear(&a, &ft_del);
 	return (0);
 }

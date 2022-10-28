@@ -33,43 +33,59 @@ static int	ft_is_sorted(t_list **a, char direction)
 	return (1);
 }
 
-static void	ft_sort_large(t_list **a)
+static void	ft_sort_large(t_list **a, t_tab *sorted)
 {
 	t_list	*b;
-	int 	mean;
-	int 	half_sorted;
+	int 	median;
+	int 	i;
 
 	if (ft_is_sorted(a, '<'))
 		exit(0);
 	b = NULL;
-	mean = ft_stack_mean(a);
-	half_sorted = 0;
-	while (!ft_is_sorted(&b, '>') || (*a && ft_is_sorted(&b, '>')))
+	median = ft_stack_median(sorted);
+	while (ft_is_above(a, median))
 	{
-		if (!half_sorted && *a && (*a)->next && ft_get_c(*a) > mean)
-		{
-			ft_rotate(a, ' ', "ra\n");
-			half_sorted = ft_half_sorted(a, mean);
-			continue ;
-		}
-		if (*a && (*a)->next && ft_get_c(*a) > ft_get_c((*a)->next))
-			ft_swap(a, "sa\n");
-		if (!b)
+		if (ft_get_c(*a) >= median)
 			ft_push(&b, a, "pb\n");
 		else
-		{
-			if (ft_get_c(b) > ft_get_c(*a))
-			{
-				ft_push(a, &b, "pa\n");
-				ft_swap(a, "sa\n");
-			}
-			else
-				ft_push(&b, a, "pb\n");
-		}
+			ft_rotate(a, ' ', "ra\n");
 	}
+	i = sorted->size - 1;
 	while (b)
 	{
-		ft_push(a, &b, "pa\n");
+		if (ft_get_c(b) == sorted->tab[i])
+		{
+			ft_push(a, &b, "pa\n");
+			i--;
+			continue ;
+		}
+		if (ft_get_front_index(&b, sorted->tab[i]) < ft_get_back_index(&b, sorted->tab[i]))
+			ft_rotate(&b, ' ', "rb\n");
+		else
+			ft_rotate(&b, 'r', "rrb\n");
+	}
+	while (ft_is_below(a, median))
+	{
+		if (ft_get_c(*a) < median)
+			ft_push(&b, a, "pb\n");
+		else
+			ft_rotate(a, 'r', "rra\n");
+	}
+	i = (sorted->size / 2) - 1;
+	while (!ft_is_sorted(a, '<'))
+		ft_rotate(a, ' ', "ra\n");
+	while (b)
+	{
+		if (ft_get_c(b) == sorted->tab[i])
+		{
+			ft_push(a, &b, "pa\n");
+			i--;
+			continue ;
+		}
+		if (ft_get_front_index(&b, sorted->tab[i]) < ft_get_back_index(&b, sorted->tab[i]))
+			ft_rotate(&b, ' ', "rb\n");
+		else
+			ft_rotate(&b, 'r', "rrb\n");
 	}
 }
 
@@ -98,7 +114,7 @@ static void	ft_sort_small(t_list **a)
 	}
 }
 
-void	ft_sort(t_list **a, int len)
+void	ft_sort(t_list **a, int len, t_tab *sorted)
 {
 	if (len == 1)
 		return ;
@@ -111,5 +127,5 @@ void	ft_sort(t_list **a, int len)
 	else if (len == 3)
 		return (ft_sort_small(a));
 	else
-		return (ft_sort_large(a));
+		return (ft_sort_large(a, sorted));
 }
