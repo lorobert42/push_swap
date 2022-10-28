@@ -20,14 +20,14 @@ static int	ft_is_sorted(t_list **a, char direction)
 
 	if (!*a)
 		return (0);
-	max = get_c(*a);
+	max = ft_get_c(*a);
 	tmp = *a;
 	while (tmp)
 	{
-		if ((direction == '<' && get_c(tmp) < max) || \
-		(direction == '>' && get_c(tmp) > max))
+		if ((direction == '<' && ft_get_c(tmp) < max) || \
+		(direction == '>' && ft_get_c(tmp) > max))
 			return (0);
-		max = get_c(tmp);
+		max = ft_get_c(tmp);
 		tmp = tmp->next;
 	}
 	return (1);
@@ -36,17 +36,29 @@ static int	ft_is_sorted(t_list **a, char direction)
 static void	ft_sort_large(t_list **a)
 {
 	t_list	*b;
+	int 	mean;
+	int 	half_sorted;
 
 	if (ft_is_sorted(a, '<'))
 		exit(0);
 	b = NULL;
+	mean = ft_stack_mean(a);
+	half_sorted = 0;
 	while (!ft_is_sorted(&b, '>') || (*a && ft_is_sorted(&b, '>')))
 	{
+		if (!half_sorted && *a && (*a)->next && ft_get_c(*a) > mean)
+		{
+			ft_rotate(a, ' ', "ra\n");
+			half_sorted = ft_half_sorted(a, mean);
+			continue ;
+		}
+		if (*a && (*a)->next && ft_get_c(*a) > ft_get_c((*a)->next))
+			ft_swap(a, "sa\n");
 		if (!b)
 			ft_push(&b, a, "pb\n");
 		else
 		{
-			if (get_c(b) > get_c(*a))
+			if (ft_get_c(b) > ft_get_c(*a))
 			{
 				ft_push(a, &b, "pa\n");
 				ft_swap(a, "sa\n");
@@ -61,24 +73,24 @@ static void	ft_sort_large(t_list **a)
 	}
 }
 
-static void	ft_sort_3(t_list **a)
+static void	ft_sort_small(t_list **a)
 {
 	if (ft_is_sorted(a, '<'))
 		return ;
-	if (get_c(*a) < get_c((*a)->next))
+	if (ft_get_c(*a) < ft_get_c((*a)->next))
 	{
-		if (get_c(*a) < get_c(ft_lstlast(*a)))
+		if (ft_get_c(*a) < ft_get_c(ft_lstlast(*a)))
 			ft_printf("sa\nra\n");
 		else
 			ft_printf("rra\n");
 	}
 	else
 	{
-		if (get_c(*a) < get_c(ft_lstlast(*a)))
+		if (ft_get_c(*a) < ft_get_c(ft_lstlast(*a)))
 			ft_printf("sa\n");
 		else
 		{
-			if (get_c((*a)->next) < get_c(ft_lstlast(*a)))
+			if (ft_get_c((*a)->next) < ft_get_c(ft_lstlast(*a)))
 				ft_printf("ra\n");
 			else
 				ft_printf("sa\nrra\n");
@@ -92,12 +104,12 @@ void	ft_sort(t_list **a, int len)
 		return ;
 	else if (len == 2)
 	{
-		if (get_c(*a) > get_c((*a)->next))
+		if (ft_get_c(*a) > ft_get_c((*a)->next))
 			ft_printf("sa\n");
 		return ;
 	}
 	else if (len == 3)
-		return (ft_sort_3(a));
+		return (ft_sort_small(a));
 	else
 		return (ft_sort_large(a));
 }

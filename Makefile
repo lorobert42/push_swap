@@ -14,7 +14,8 @@ NAME	:=	push_swap
 
 SRCS	:=	push_swap.c \
 			ft_sort.c \
-			ft_stack.c
+			ft_stack.c \
+			ft_math.c
 OBJS	:=	$(SRCS:.c=.o)
 
 LIBS	:=	ft

@@ -71,7 +71,7 @@ void	ft_rotate(t_list **a, char direction, char *str)
 	ft_printf(str);
 }
 
-int	get_c(t_list *a)
+int	ft_get_c(t_list *a)
 {
 	return (*(int *)a->content);
 }

@@ -16,11 +16,13 @@
 # include "libft/libft.h"
 
 void	ft_sort(t_list **a, int len);
-int		get_c(t_list *a);
+int		ft_get_c(t_list *a);
 void	ft_del(void *content);
 void	ft_error(t_list **a);
 void	ft_swap(t_list **a, char *str);
 void	ft_push(t_list **a, t_list **b, char *str);
 void	ft_rotate(t_list **a, char direction, char *str);
+int		ft_stack_mean(t_list **a);
+int		ft_half_sorted(t_list **a, int mean);
 
 #endif
