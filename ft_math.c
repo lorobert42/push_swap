@@ -12,64 +12,15 @@
 
 #include "push_swap.h"
 
-int	ft_stack_mean(t_list **a)
+int	ft_min(int a, int b)
 {
-	t_list	*tmp;
-	int 	mean;
-
-	mean = 0;
-	tmp = *a;
-	while (tmp)
-	{
-		mean += ft_get_c(tmp);
-		tmp = tmp->next;
-	}
-	return (mean / ft_lstsize(*a));
+	if (a <= b)
+		return (a);
+	else
+		return (b);
 }
 
-int	ft_half_sorted(t_list **a, int mean)
-{
-	t_list	*tmp;
-
-	tmp = *a;
-	while (tmp)
-	{
-		if (ft_get_c(tmp) < mean)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-int	ft_is_below(t_list **a, int threshold)
-{
-	t_list	*tmp;
-
-	tmp = *a;
-	while (tmp)
-	{
-		if (ft_get_c(tmp) < threshold)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	ft_is_above(t_list **a, int threshold)
-{
-	t_list	*tmp;
-
-	tmp = *a;
-	while (tmp)
-	{
-		if (ft_get_c(tmp) >= threshold)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	ft_get_front_index(t_list **a, int value)
+int	ft_index(t_list **a, int value)
 {
 	t_list	*tmp;
 	int 	index;
@@ -86,7 +37,7 @@ int	ft_get_front_index(t_list **a, int value)
 	return (-1);
 }
 
-int	ft_get_back_index(t_list **a, int value)
+int	ft_rev_index(t_list **a, int value)
 {
 	t_list	*tmp;
 	int 	index;
@@ -105,7 +56,21 @@ int	ft_get_back_index(t_list **a, int value)
 	return (ft_lstsize(*a) - index);
 }
 
-int	ft_stack_median(t_tab *tab)
+int	ft_sorted_index(int n, t_tab *tab)
+{
+	int i;
+
+	i = 0;
+	while ( i < tab->size)
+	{
+		if (tab->tab[i] == n)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	ft_sorted_median(t_tab *tab)
 {
 	return (tab->tab[tab->size / 2]);
 }

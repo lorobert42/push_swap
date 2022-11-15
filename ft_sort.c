@@ -19,7 +19,7 @@ static int	ft_is_sorted(t_list **a, char direction)
 	int		max;
 
 	if (!*a)
-		return (0);
+		return (1);
 	max = ft_get_c(*a);
 	tmp = *a;
 	while (tmp)
@@ -33,59 +33,113 @@ static int	ft_is_sorted(t_list **a, char direction)
 	return (1);
 }
 
+static int ft_is_pseudosorted(t_list *a)
+{
+	t_list	*tmp;
+	t_tab	sorted;
+	int 	i;
+
+	if (!a)
+		return (1);
+	sorted.size = ft_lstsize(a);
+	sorted.tab = malloc(sizeof(int) * sorted.size);
+	tmp = a;
+	i = 0;
+	while (i < sorted.size)
+	{
+		sorted.tab[i] = ft_get_c(tmp);
+		tmp = tmp->next;
+		i++;
+	}
+	ft_sort_tab(&sorted);
+	tmp = a;
+	while (tmp->next)
+	{
+		if (ft_sorted_index(ft_get_c(tmp), &sorted) + 1 != ft_sorted_index(ft_get_c(tmp->next), &sorted) && !(ft_sorted_index(ft_get_c(tmp), &sorted) == sorted.size - 1 && ft_sorted_index(ft_get_c(tmp->next), &sorted) == 0))
+		{
+			free(sorted.tab);
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	free(sorted.tab);
+	return (1);
+}
+
 static void	ft_sort_large(t_list **a, t_tab *sorted)
 {
 	t_list	*b;
-	int 	median;
-	int 	i;
+	int 	rot;
 
+	(void) sorted;
 	if (ft_is_sorted(a, '<'))
 		exit(0);
 	b = NULL;
-	median = ft_stack_median(sorted);
-	while (ft_is_above(a, median))
+	//ft_print_stack(*a, b);
+	while (!ft_is_pseudosorted(*a))
 	{
-		if (ft_get_c(*a) >= median)
-			ft_push(&b, a, "pb\n");
-		else
-			ft_rotate(a, ' ', "ra\n");
+		if (ft_get_c(ft_lstlast(*a)) < ft_get_c((*a)->next) && ft_get_c(ft_lstlast(*a)) < ft_get_c(*a))
+		{
+			ft_rrotate(a, "rra\n");
+		}
+		else if (ft_get_c((*a)->next) < ft_get_c(*a) && ft_get_c((*a)->next) < ft_get_c(
+				ft_lstlast(*a)))
+		{
+			ft_swap(a, "sa\n");
+		}
+		while (ft_find_position(ft_get_c(*a), b) != 0)
+		{
+			if (ft_find_position(ft_get_c(*a), b) >= ft_lstsize(b) / 2)
+				ft_rrotate(&b, "rrb\n");
+			else
+				ft_rotate(&b, "rb\n");
+		}
+		ft_push(&b, a, "pb\n");
+		//ft_print_stack(*a, b);
 	}
-	i = sorted->size - 1;
+	while (ft_get_c(*a) != ft_get_min(*a) || ft_get_c(b) != ft_get_max(b))
+	{
+		if (ft_index(a, ft_get_min(*a)) && ft_index(a, ft_get_min(*a)) <= ft_rev_index(a, ft_get_min(*a)))
+		{
+			if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) <= ft_rev_index(&b, ft_get_max(b)))
+			{
+				ft_rotate(a, "");
+				ft_rotate(&b, "rs\n");
+			}
+			else
+				ft_rotate(a, "ra\n");
+		}
+		else if (ft_index(a, ft_get_min(*a)))
+		{
+			if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) > ft_index(&b, ft_get_max(b)))
+			{
+				ft_rrotate(a, "");
+				ft_rrotate(&b, "rrs\n");
+			}
+			else
+				ft_rrotate(a, "rra\n");
+		}
+		if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) <= ft_rev_index(&b, ft_get_max(b)))
+			ft_rotate(&b, "rb\n");
+		else if (ft_index(&b, ft_get_max(b)))
+			ft_rrotate(&b, "rrb\n");
+		//ft_print_stack(*a, b);
+	}
 	while (b)
 	{
-		if (ft_get_c(b) == sorted->tab[i])
+		rot = 0;
+		while (ft_get_c(*a) < ft_get_c(b))
 		{
-			ft_push(a, &b, "pa\n");
-			i--;
-			continue ;
+			ft_rotate(a, "ra\n");
+			rot++;
 		}
-		if (ft_get_front_index(&b, sorted->tab[i]) < ft_get_back_index(&b, sorted->tab[i]))
-			ft_rotate(&b, ' ', "rb\n");
-		else
-			ft_rotate(&b, 'r', "rrb\n");
-	}
-	while (ft_is_below(a, median))
-	{
-		if (ft_get_c(*a) < median)
-			ft_push(&b, a, "pb\n");
-		else
-			ft_rotate(a, 'r', "rra\n");
-	}
-	i = (sorted->size / 2) - 1;
-	while (!ft_is_sorted(a, '<'))
-		ft_rotate(a, ' ', "ra\n");
-	while (b)
-	{
-		if (ft_get_c(b) == sorted->tab[i])
+		ft_push(a, &b, "pa\n");
+		while (rot > 0)
 		{
-			ft_push(a, &b, "pa\n");
-			i--;
-			continue ;
+			ft_rrotate(a, "rra\n");
+			rot--;
 		}
-		if (ft_get_front_index(&b, sorted->tab[i]) < ft_get_back_index(&b, sorted->tab[i]))
-			ft_rotate(&b, ' ', "rb\n");
-		else
-			ft_rotate(&b, 'r', "rrb\n");
+		//ft_print_stack(*a, b);
 	}
 }
 

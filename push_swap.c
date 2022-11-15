@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
 #include <stdlib.h>
+#include <unistd.h>
 #include "push_swap.h"
 
 static int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
@@ -76,7 +75,7 @@ static int	parse_string(char *s, t_list **a, t_tab *sorted)
 
 void	ft_error(t_list **a)
 {
-	ft_printf("Error\n");
+	write(2, "Error\n", 6);
 	if (a)
 		ft_lstclear(a, &ft_del);
 	exit(0);
