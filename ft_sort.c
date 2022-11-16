@@ -13,15 +13,15 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-static int	ft_is_sorted(t_list **a, char direction)
+static int	ft_is_sorted(t_list *a, char direction)
 {
 	t_list	*tmp;
 	int		max;
 
-	if (!*a)
+	if (!a)
 		return (1);
-	max = ft_get_c(*a);
-	tmp = *a;
+	max = ft_get_c(a);
+	tmp = a;
 	while (tmp)
 	{
 		if ((direction == '<' && ft_get_c(tmp) < max) || \
@@ -66,101 +66,105 @@ static int ft_is_pseudosorted(t_list *a)
 	return (1);
 }
 
-static void	ft_sort_large(t_list **a, t_tab *sorted)
+static void	ft_sort_large(t_stack *a, t_tab *sorted)
 {
-	t_list	*b;
-	int 	rot;
+	t_stack	*b;
 
 	(void) sorted;
-	if (ft_is_sorted(a, '<'))
+	if (ft_is_sorted(a->values, '<'))
 		exit(0);
-	b = NULL;
-	//ft_print_stack(*a, b);
-	while (!ft_is_pseudosorted(*a))
+	b = malloc(sizeof(t_stack));
+	b->values = NULL;
+	b->name = 'b';
+	ft_print_stack(a->values, b->values);
+	while (!ft_is_pseudosorted(a->values))
 	{
-		if (ft_get_c(ft_lstlast(*a)) < ft_get_c((*a)->next) && ft_get_c(ft_lstlast(*a)) < ft_get_c(*a))
+		if (ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values->next) && ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values))
 		{
-			ft_rrotate(a, "rra\n");
+			ft_rrotate(a, 1);
 		}
-		else if (ft_get_c((*a)->next) < ft_get_c(*a) && ft_get_c((*a)->next) < ft_get_c(
-				ft_lstlast(*a)))
+		else if (ft_get_c(a->values->next) < ft_get_c(a->values) && ft_get_c(a->values->next) < ft_get_c(ft_lstlast(a->values)))
 		{
-			ft_swap(a, "sa\n");
+			ft_swap(a, 1);
 		}
-		while (ft_find_position(ft_get_c(*a), b) != 0)
+		while (ft_find_position(ft_get_c(a->values), b->values) != 0)
 		{
-			if (ft_find_position(ft_get_c(*a), b) >= ft_lstsize(b) / 2)
-				ft_rrotate(&b, "rrb\n");
+			if (ft_find_position(ft_get_c(a->values), b->values) >= ft_lstsize(b->values) / 2)
+				ft_rrotate(b, 1);
 			else
-				ft_rotate(&b, "rb\n");
+				ft_rotate(b, 1);
 		}
-		ft_push(&b, a, "pb\n");
-		//ft_print_stack(*a, b);
+		ft_push(b, a);
+		ft_print_stack(a->values, b->values);
 	}
-	while (ft_get_c(*a) != ft_get_min(*a) || ft_get_c(b) != ft_get_max(b))
+	while (b->values && (ft_get_c(a->values) != ft_get_min(a->values) || ft_get_c(b->values) != ft_get_max(b->values)))
 	{
-		if (ft_index(a, ft_get_min(*a)) && ft_index(a, ft_get_min(*a)) <= ft_rev_index(a, ft_get_min(*a)))
+		if (ft_index(a->values, ft_get_min(a->values)) && ft_index(a->values, ft_get_min(a->values)) <= ft_rev_index(a->values, ft_get_min(a->values)))
 		{
-			if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) <= ft_rev_index(&b, ft_get_max(b)))
-			{
-				ft_rotate(a, "");
-				ft_rotate(&b, "rs\n");
-			}
+			if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
+				ft_rotate_both(a, b);
 			else
-				ft_rotate(a, "ra\n");
+				ft_rotate(a, 1);
 		}
-		else if (ft_index(a, ft_get_min(*a)))
+		else if (ft_index(a->values, ft_get_min(a->values)))
 		{
-			if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) > ft_index(&b, ft_get_max(b)))
-			{
-				ft_rrotate(a, "");
-				ft_rrotate(&b, "rrs\n");
-			}
+			if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) > ft_index(b->values, ft_get_max(b->values)))
+				ft_rrotate_both(a, b);
 			else
-				ft_rrotate(a, "rra\n");
+				ft_rrotate(a, 1);
 		}
-		if (ft_index(&b, ft_get_max(b)) && ft_index(&b, ft_get_max(b)) <= ft_rev_index(&b, ft_get_max(b)))
-			ft_rotate(&b, "rb\n");
-		else if (ft_index(&b, ft_get_max(b)))
-			ft_rrotate(&b, "rrb\n");
-		//ft_print_stack(*a, b);
+		if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
+			ft_rotate(b, 1);
+		else if (ft_index(b->values, ft_get_max(b->values)))
+			ft_rrotate(b, 1);
+		ft_print_stack(a->values, b->values);
 	}
-	while (b)
+	while (b->values)
 	{
-		rot = 0;
-		while (ft_get_c(*a) < ft_get_c(b))
+		if (ft_find_position(ft_get_c(b->values), a->values) < ft_lstsize(a->values) / 2)
 		{
-			ft_rotate(a, "ra\n");
-			rot++;
+			while (ft_find_position(ft_get_c(b->values), a->values))
+				ft_rotate(a, 1);
 		}
-		ft_push(a, &b, "pa\n");
-		while (rot > 0)
+		else
 		{
-			ft_rrotate(a, "rra\n");
-			rot--;
+			while (ft_find_position(ft_get_c(b->values), a->values))
+				ft_rrotate(a, 1);
 		}
-		//ft_print_stack(*a, b);
+		ft_push(a, b);
+		ft_print_stack(a->values, b->values);
 	}
+	if (ft_index(a->values, ft_get_min(a->values)) < ft_lstsize(a->values) / 2)
+	{
+		while (ft_get_c(a->values) != ft_get_min(a->values))
+			ft_rotate(a, 1);
+	}
+	else
+	{
+		while (ft_get_c(a->values) != ft_get_min(a->values))
+			ft_rrotate(a, 1);
+	}
+	ft_print_stack(a->values, b->values);
 }
 
-static void	ft_sort_small(t_list **a)
+static void	ft_sort_small(t_list *a)
 {
 	if (ft_is_sorted(a, '<'))
 		return ;
-	if (ft_get_c(*a) < ft_get_c((*a)->next))
+	if (ft_get_c(a) < ft_get_c(a->next))
 	{
-		if (ft_get_c(*a) < ft_get_c(ft_lstlast(*a)))
+		if (ft_get_c(a) < ft_get_c(ft_lstlast(a)))
 			ft_printf("sa\nra\n");
 		else
 			ft_printf("rra\n");
 	}
 	else
 	{
-		if (ft_get_c(*a) < ft_get_c(ft_lstlast(*a)))
+		if (ft_get_c(a) < ft_get_c(ft_lstlast(a)))
 			ft_printf("sa\n");
 		else
 		{
-			if (ft_get_c((*a)->next) < ft_get_c(ft_lstlast(*a)))
+			if (ft_get_c(a->next) < ft_get_c(ft_lstlast(a)))
 				ft_printf("ra\n");
 			else
 				ft_printf("sa\nrra\n");
@@ -168,18 +172,18 @@ static void	ft_sort_small(t_list **a)
 	}
 }
 
-void	ft_sort(t_list **a, int len, t_tab *sorted)
+void	ft_sort(t_stack *a, int len, t_tab *sorted)
 {
 	if (len == 1)
 		return ;
 	else if (len == 2)
 	{
-		if (ft_get_c(*a) > ft_get_c((*a)->next))
+		if (ft_get_c(a->values) > ft_get_c(a->values->next))
 			ft_printf("sa\n");
 		return ;
 	}
 	else if (len == 3)
-		return (ft_sort_small(a));
+		return (ft_sort_small(a->values));
 	else
 		return (ft_sort_large(a, sorted));
 }

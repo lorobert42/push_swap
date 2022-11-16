@@ -20,12 +20,12 @@ int	ft_min(int a, int b)
 		return (b);
 }
 
-int	ft_index(t_list **a, int value)
+int	ft_index(t_list *a, int value)
 {
 	t_list	*tmp;
 	int 	index;
 
-	tmp = *a;
+	tmp = a;
 	index = 0;
 	while (tmp)
 	{
@@ -37,13 +37,13 @@ int	ft_index(t_list **a, int value)
 	return (-1);
 }
 
-int	ft_rev_index(t_list **a, int value)
+int	ft_rev_index(t_list *a, int value)
 {
 	t_list	*tmp;
 	int 	index;
 	int 	i;
 
-	tmp = *a;
+	tmp = a;
 	index = 0;
 	i = 0;
 	while (tmp)
@@ -53,7 +53,7 @@ int	ft_rev_index(t_list **a, int value)
 		tmp = tmp->next;
 		i++;
 	}
-	return (ft_lstsize(*a) - index);
+	return (ft_lstsize(a) - index);
 }
 
 int	ft_sorted_index(int n, t_tab *tab)

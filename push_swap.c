@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include "push_swap.h"
 
-static int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
+static int	parse_args(int argc, char **argv, t_list *a, t_tab *sorted)
 {
 	int	i;
 	int	tmp;
@@ -30,10 +30,10 @@ static int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
 			return (0);
 		content = malloc(sizeof(int));
 		*content = tmp;
-		if (!(*a)->content)
-			(*a)->content = content;
+		if (!a->content)
+			a->content = content;
 		else
-			ft_lstadd_back(a, ft_lstnew(content));
+			ft_lstadd_back(&a, ft_lstnew(content));
 		sorted->tab[i] = tmp;
 		i++;
 	}
@@ -41,7 +41,7 @@ static int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
 	return (i);
 }
 
-static int	parse_string(char *s, t_list **a, t_tab *sorted)
+static int	parse_string(char *s, t_list *a, t_tab *sorted)
 {
 	int		i;
 	char	**strs;
@@ -62,10 +62,10 @@ static int	parse_string(char *s, t_list **a, t_tab *sorted)
 			return (0);
 		content = malloc(sizeof(int));
 		*content = tmp;
-		if (!(*a)->content)
-			(*a)->content = content;
+		if (!a->content)
+			a->content = content;
 		else
-			ft_lstadd_back(a, ft_lstnew(content));
+			ft_lstadd_back(&a, ft_lstnew(content));
 		sorted->tab[i] = tmp;
 		i++;
 	}
@@ -73,34 +73,42 @@ static int	parse_string(char *s, t_list **a, t_tab *sorted)
 	return (i);
 }
 
-void	ft_error(t_list **a)
+void	ft_error(t_stack *s)
 {
 	write(2, "Error\n", 6);
-	if (a)
-		ft_lstclear(a, &ft_del);
+	if (s)
+	{
+		ft_lstclear(&(s->values), &ft_del);
+		free(s);
+	}
 	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_list	*a;
+	t_stack	*a;
 	t_tab 	sorted;
 	int		len;
 
 	if (argc == 1)
 		ft_error(NULL);
-	a = ft_lstnew(NULL);
+	a = malloc(sizeof(t_stack));
 	if (!a)
 		ft_error(NULL);
+	a->values = ft_lstnew(NULL);
+	if (!a->values)
+		ft_error(NULL);
+	a->name = 'a';
 	sorted.size = 0;
 	sorted.tab = NULL;
 	if (argc == 2 && ft_strchr(argv[1], ' '))
-		len = parse_string(argv[1], &a, &sorted);
+		len = parse_string(argv[1], a->values, &sorted);
 	else
-		len = parse_args(argc, argv, &a, &sorted);
+		len = parse_args(argc, argv, a->values, &sorted);
 	if (!len)
-		ft_error(&a);
-	ft_sort(&a, len, &sorted);
-	ft_lstclear(&a, &ft_del);
+		ft_error(a);
+	ft_sort(a, len, &sorted);
+	ft_lstclear(&(a->values), &ft_del);
+	free(a);
 	return (0);
 }
