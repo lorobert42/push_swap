@@ -40,6 +40,7 @@ void	ft_rotate_both(t_stack *s1, t_stack *s2);
 void	ft_rrotate(t_stack *s, int print);
 void	ft_rrotate_both(t_stack *s1, t_stack *s2);
 int 	ft_find_position(int n, t_list *a);
+int		ft_find_rev_position(int n, t_list *a);
 int		ft_stack_median(t_tab *tab);
 int		ft_index(t_list *a, int value);
 int		ft_rev_index(t_list *a, int value);

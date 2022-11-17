@@ -159,6 +159,29 @@ int ft_find_position(int n, t_list *a)
 	return (pos);
 }
 
+int ft_find_rev_position(int n, t_list *a)
+{
+	int 	pos;
+
+	if (!a || ft_lstsize(a) == 1)
+		return (0);
+	if (n < ft_get_min(a))
+		return (ft_index(a, ft_get_max(a)) % ft_lstsize(a));
+	if (n > ft_get_max(a))
+		return (ft_index(a, ft_get_min(a)));
+	if (ft_get_c(a) < n && ft_get_c(ft_lstlast(a)) > n)
+		return (0);
+	pos = 1;
+	while (a && a->next)
+	{
+		if (ft_get_c(a) > n && ft_get_c(a->next) < n)
+			return (pos);
+		a = a->next;
+		pos++;
+	}
+	return (pos);
+}
+
 int	ft_get_c(t_list *a)
 {
 	return (*(int *)a->content);
@@ -183,11 +206,11 @@ void	ft_print_stack(t_list *a, t_list *b)
 	while (i < size)
 	{
 		if (!a)
-			ft_printf("-\t\t%d\n", ft_get_c(b));
+			ft_printf("-\t\t\t\t%d\n", ft_get_c(b));
 		else if (!b)
-			ft_printf("%d\t\t-\n", ft_get_c(a));
+			ft_printf("%d\t\t\t\t-\n", ft_get_c(a));
 		else
-			ft_printf("%d\t\t%d\n", ft_get_c(a), ft_get_c(b));
+			ft_printf("%d\t\t\t\t%d\n", ft_get_c(a), ft_get_c(b));
 		if (a)
 			a = a->next;
 		if (b)

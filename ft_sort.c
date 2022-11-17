@@ -76,7 +76,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	b = malloc(sizeof(t_stack));
 	b->values = NULL;
 	b->name = 'b';
-	ft_print_stack(a->values, b->values);
+	//ft_print_stack(a->values, b->values);
 	while (!ft_is_pseudosorted(a->values))
 	{
 		if (ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values->next) && ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values))
@@ -87,15 +87,15 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 		{
 			ft_swap(a, 1);
 		}
-		while (ft_find_position(ft_get_c(a->values), b->values) != 0)
+		while (ft_find_rev_position(ft_get_c(a->values), b->values) != 0)
 		{
-			if (ft_find_position(ft_get_c(a->values), b->values) >= ft_lstsize(b->values) / 2)
+			if (ft_find_rev_position(ft_get_c(a->values), b->values) > ft_lstsize(b->values) / 2)
 				ft_rrotate(b, 1);
 			else
 				ft_rotate(b, 1);
 		}
 		ft_push(b, a);
-		ft_print_stack(a->values, b->values);
+		//ft_print_stack(a->values, b->values);
 	}
 	while (b->values && (ft_get_c(a->values) != ft_get_min(a->values) || ft_get_c(b->values) != ft_get_max(b->values)))
 	{
@@ -117,7 +117,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 			ft_rotate(b, 1);
 		else if (ft_index(b->values, ft_get_max(b->values)))
 			ft_rrotate(b, 1);
-		ft_print_stack(a->values, b->values);
+		//ft_print_stack(a->values, b->values);
 	}
 	while (b->values)
 	{
@@ -132,7 +132,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 				ft_rrotate(a, 1);
 		}
 		ft_push(a, b);
-		ft_print_stack(a->values, b->values);
+		//ft_print_stack(a->values, b->values);
 	}
 	if (ft_index(a->values, ft_get_min(a->values)) < ft_lstsize(a->values) / 2)
 	{
@@ -144,7 +144,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 		while (ft_get_c(a->values) != ft_get_min(a->values))
 			ft_rrotate(a, 1);
 	}
-	ft_print_stack(a->values, b->values);
+	//ft_print_stack(a->values, b->values);
 }
 
 static void	ft_sort_small(t_list *a)
