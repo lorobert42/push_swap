@@ -69,13 +69,39 @@ static int ft_is_pseudosorted(t_list *a)
 static void	ft_sort_large(t_stack *a, t_tab *sorted)
 {
 	t_stack	*b;
+	int 	median;
 
-	(void) sorted;
+	median = ft_sorted_median(sorted);
 	if (ft_is_sorted(a->values, '<'))
 		exit(0);
 	b = malloc(sizeof(t_stack));
 	b->values = NULL;
 	b->name = 'b';
+	//ft_printf("%d\n", median);
+	//ft_print_stack(a->values, b->values);
+//	while (ft_get_min(a->values) > median)
+//	{
+//		if (ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values->next) && ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values) &&
+//				ft_get_c(a->values) <= median)
+//		{
+//			ft_rrotate(a, 1);
+//		}
+//		else if (ft_get_c(a->values->next) < ft_get_c(a->values) && ft_get_c(a->values->next) < ft_get_c(ft_lstlast(a->values)) && ft_get_c(a->values) <= median)
+//		{
+//			ft_swap(a, 1);
+//		}
+//		else
+//			ft_rotate(a, 1);
+//		while (ft_find_rev_position(ft_get_c(a->values), b->values) != 0)
+//		{
+//			if (ft_find_rev_position(ft_get_c(a->values), b->values) > ft_lstsize(b->values) / 2)
+//				ft_rrotate(b, 1);
+//			else
+//				ft_rotate(b, 1);
+//		}
+//		ft_push(b, a);
+//		//ft_print_stack(a->values, b->values);
+//	}
 	//ft_print_stack(a->values, b->values);
 	while (!ft_is_pseudosorted(a->values))
 	{
@@ -147,29 +173,75 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	//ft_print_stack(a->values, b->values);
 }
 
-static void	ft_sort_small(t_list *a)
+static void	ft_sort_3(t_stack *a)
 {
-	if (ft_is_sorted(a, '<'))
+	if (ft_is_sorted(a->values, '<'))
 		return ;
-	if (ft_get_c(a) < ft_get_c(a->next))
+	if (ft_get_c(a->values) < ft_get_c(a->values->next))
 	{
-		if (ft_get_c(a) < ft_get_c(ft_lstlast(a)))
-			ft_printf("sa\nra\n");
+		if (ft_get_c(a->values) < ft_get_c(ft_lstlast(a->values)))
+		{
+			ft_swap(a, 1);
+			ft_rotate(a, 1);
+		}
 		else
-			ft_printf("rra\n");
+			ft_rrotate(a, 1);
 	}
 	else
 	{
-		if (ft_get_c(a) < ft_get_c(ft_lstlast(a)))
-			ft_printf("sa\n");
+		if (ft_get_c(a->values) < ft_get_c(ft_lstlast(a->values)))
+			ft_swap(a, 1);
 		else
 		{
-			if (ft_get_c(a->next) < ft_get_c(ft_lstlast(a)))
-				ft_printf("ra\n");
+			if (ft_get_c(a->values->next) < ft_get_c(ft_lstlast(a->values)))
+				ft_rotate(a, 1);
 			else
-				ft_printf("sa\nrra\n");
+			{
+				ft_swap(a, 1);
+				ft_rrotate(a, 1);
+			}
 		}
 	}
+}
+
+static void	ft_sort_5(t_stack *a)
+{
+	t_stack	*b;
+
+	if (ft_is_sorted(a->values, '<'))
+		return ;
+	b = malloc(sizeof(t_stack));
+	b->values = NULL;
+	b->name = 'b';
+	while (ft_lstsize(a->values) > 3)
+		ft_push(b, a);
+	ft_sort_3(a);
+	while (b->values)
+	{
+		if (ft_find_position(ft_get_c(b->values), a->values) < ft_lstsize(a->values) / 2)
+		{
+			while (ft_find_position(ft_get_c(b->values), a->values))
+				ft_rotate(a, 1);
+		}
+		else
+		{
+			while (ft_find_position(ft_get_c(b->values), a->values))
+				ft_rrotate(a, 1);
+		}
+		ft_push(a, b);
+		//ft_print_stack(a->values, b->values);
+	}
+	if (ft_index(a->values, ft_get_min(a->values)) < ft_lstsize(a->values) / 2)
+	{
+		while (ft_get_c(a->values) != ft_get_min(a->values))
+			ft_rotate(a, 1);
+	}
+	else
+	{
+		while (ft_get_c(a->values) != ft_get_min(a->values))
+			ft_rrotate(a, 1);
+	}
+	//ft_print_stack(a->values, b->values);
 }
 
 void	ft_sort(t_stack *a, int len, t_tab *sorted)
@@ -183,7 +255,9 @@ void	ft_sort(t_stack *a, int len, t_tab *sorted)
 		return ;
 	}
 	else if (len == 3)
-		return (ft_sort_small(a->values));
+		return (ft_sort_3(a));
+	else if (len > 3 && len < 10)
+		return (ft_sort_5(a));
 	else
 		return (ft_sort_large(a, sorted));
 }
