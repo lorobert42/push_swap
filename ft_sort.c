@@ -204,7 +204,7 @@ static void	ft_sort_3(t_stack *a)
 	}
 }
 
-static void	ft_sort_5(t_stack *a)
+static void	ft_sort_10(t_stack *a)
 {
 	t_stack	*b;
 
@@ -257,7 +257,7 @@ void	ft_sort(t_stack *a, int len, t_tab *sorted)
 	else if (len == 3)
 		return (ft_sort_3(a));
 	else if (len > 3 && len < 10)
-		return (ft_sort_5(a));
+		return (ft_sort_10(a));
 	else
 		return (ft_sort_large(a, sorted));
 }
