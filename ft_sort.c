@@ -13,58 +13,22 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-static int	ft_is_sorted(t_list *a, char direction)
+static int	ft_is_sorted(t_list *a)
 {
-	t_list	*tmp;
 	int		max;
 
 	if (!a)
 		return (1);
 	max = ft_get_c(a);
-	tmp = a;
-	while (tmp)
+	while (a)
 	{
-		if ((direction == '<' && ft_get_c(tmp) < max) || \
-		(direction == '>' && ft_get_c(tmp) > max))
+		if (ft_get_c(a) < max)
 			return (0);
-		max = ft_get_c(tmp);
-		tmp = tmp->next;
+		max = ft_get_c(a);
+		a = a->next;
 	}
 	return (1);
 }
-
-// static int ft_is_pseudosorted(t_list *a)
-// {
-// 	t_list	*tmp;
-// 	t_tab	sorted;
-// 	int 	i;
-
-// 	if (!a)
-// 		return (1);
-// 	sorted.size = ft_lstsize(a);
-// 	sorted.tab = malloc(sizeof(int) * sorted.size);
-// 	tmp = a;
-// 	i = 0;
-// 	while (i < sorted.size)
-// 	{
-// 		sorted.tab[i] = ft_get_c(tmp);
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	ft_sort_tab(&sorted);
-// 	tmp = a;
-// 	while (tmp->next)
-// 	{
-// 		if (ft_sorted_index(ft_get_c(tmp), &sorted) + 1 != ft_sorted_index(ft_get_c(tmp->next), &sorted) && !(ft_sorted_index(ft_get_c(tmp), &sorted) == sorted.size - 1 && ft_sorted_index(ft_get_c(tmp->next), &sorted) == 0))
-// 		{
-// 			free(sorted.tab);
-// 			return (0);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	free(sorted.tab);
-// 	return (1);
-// }
 
 void	ft_print_tab(t_tab *t)
 {
@@ -83,7 +47,7 @@ void	ft_print_tab(t_tab *t)
 
 static void	ft_sort_3(t_stack *a)
 {
-	if (ft_is_sorted(a->values, '<'))
+	if (ft_is_sorted(a->values))
 		return ;
 	if (ft_get_c(a->values) < ft_get_c(a->values->next))
 	{
@@ -115,14 +79,16 @@ static void	ft_sort_3(t_stack *a)
 static void	ft_sort_large(t_stack *a, t_tab *sorted)
 {
 	t_stack	*b;
-	t_tab 	*chunks;
+	t_tab	*chunks;
 	int		i;
 
-	chunks = ft_sorted_chunks(sorted);
+	chunks = ft_sorted_chunks(sorted, a);
+	if (!chunks)
+		ft_error(a, sorted);
 	//ft_printf("\n");
 	//ft_print_tab(sorted);
 	//ft_print_tab(chunks);
-	if (ft_is_sorted(a->values, '<'))
+	if (ft_is_sorted(a->values))
 		exit(0);
 	b = malloc(sizeof(t_stack));
 	b->values = NULL;
@@ -139,14 +105,6 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 			else
 				ft_rrotate(a, 1);
 		}
-		//ft_print_stack(a->values, b->values);
-		// while (ft_find_rev_position(ft_get_c(a->values), b->values) != 0)
-		// {
-		// 	if (ft_find_rev_position(ft_get_c(a->values), b->values) > ft_lstsize(b->values) / 2)
-		// 		ft_rrotate(b, 1);
-		// 	else
-		// 		ft_rotate(b, 1);
-		// }
 		ft_push(b, a);
 		if (ft_get_min(a->values) >= chunks->tab[i])
 			i++;
@@ -176,81 +134,15 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 			ft_push(a, b);
 	}
 
-	// while (!ft_is_pseudosorted(a->values))
-	// {
-	// 	if (ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values->next) && ft_get_c(ft_lstlast(a->values)) < ft_get_c(a->values))
-	// 	{
-	// 		ft_rrotate(a, 1);
-	// 	}
-	// 	else if (ft_get_c(a->values->next) < ft_get_c(a->values) && ft_get_c(a->values->next) < ft_get_c(ft_lstlast(a->values)))
-	// 	{
-	// 		ft_swap(a, 1);
-	// 	}
-	// 	// while (ft_find_rev_position(ft_get_c(a->values), b->values) != 0)
-	// 	// {
-	// 	// 	if (ft_find_rev_position(ft_get_c(a->values), b->values) > ft_lstsize(b->values) / 2)
-	// 	// 		ft_rrotate(b, 1);
-	// 	// 	else
-	// 	// 		ft_rotate(b, 1);
-	// 	// }
-	// 	ft_push(b, a);
-	// 	//ft_print_stack(a->values, b->values);
-	// }
-	// while (b->values && (ft_get_c(a->values) != ft_get_min(a->values) || ft_get_c(b->values) != ft_get_max(b->values)))
-	// {
-	// 	if (ft_index(a->values, ft_get_min(a->values)) && ft_index(a->values, ft_get_min(a->values)) <= ft_rev_index(a->values, ft_get_min(a->values)))
-	// 	{
-	// 		if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
-	// 			ft_rotate_both(a, b);
-	// 		else
-	// 			ft_rotate(a, 1);
-	// 	}
-	// 	else if (ft_index(a->values, ft_get_min(a->values)))
-	// 	{
-	// 		if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) > ft_index(b->values, ft_get_max(b->values)))
-	// 			ft_rrotate_both(a, b);
-	// 		else
-	// 			ft_rrotate(a, 1);
-	// 	}
-	// 	if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
-	// 		ft_rotate(b, 1);
-	// 	else if (ft_index(b->values, ft_get_max(b->values)))
-	// 		ft_rrotate(b, 1);
-	// 	//ft_print_stack(a->values, b->values);
-	// }
-	// while (b->values)
-	// {
-	// 	if (ft_find_position(ft_get_c(b->values), a->values) < ft_lstsize(a->values) / 2)
-	// 	{
-	// 		while (ft_find_position(ft_get_c(b->values), a->values))
-	// 			ft_rotate(a, 1);
-	// 	}
-	// 	else
-	// 	{
-	// 		while (ft_find_position(ft_get_c(b->values), a->values))
-	// 			ft_rrotate(a, 1);
-	// 	}
-	// 	ft_push(a, b);
-	// 	//ft_print_stack(a->values, b->values);
-	// }
-	// if (ft_index(a->values, ft_get_min(a->values)) < ft_lstsize(a->values) / 2)
-	// {
-	// 	while (ft_get_c(a->values) != ft_get_min(a->values))
-	// 		ft_rotate(a, 1);
-	// }
-	// else
-	// {
-	// 	while (ft_get_c(a->values) != ft_get_min(a->values))
-	// 		ft_rrotate(a, 1);
-	// }
-	//ft_print_stack(a->values, b->values);
+	free(chunks->tab);
+	free(chunks);
 }
 
 static void	ft_sort_10(t_stack *a)
 {
 	t_stack	*b;
 
-	if (ft_is_sorted(a->values, '<'))
+	if (ft_is_sorted(a->values))
 		return ;
 	b = malloc(sizeof(t_stack));
 	b->values = NULL;

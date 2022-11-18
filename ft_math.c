@@ -13,14 +13,6 @@
 #include <stdlib.h>
 #include "push_swap.h"
 
-int	ft_min(int a, int b)
-{
-	if (a <= b)
-		return (a);
-	else
-		return (b);
-}
-
 int	ft_index_limit(t_list *a, int value)
 {
 	int	index;
@@ -91,50 +83,26 @@ int	ft_rev_index(t_list *a, int value)
 	return (ft_lstsize(a) - index);
 }
 
-int	ft_sorted_index(int n, t_tab *tab)
-{
-	int	i;
-
-	i = 0;
-	while (i < tab->size)
-	{
-		if (tab->tab[i] == n)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int	ft_sorted_median(t_tab *tab)
-{
-	return (tab->tab[tab->size / 2]);
-}
-
-//TODO: use div instead of ideal_size
-t_tab	*ft_sorted_chunks(t_tab *tab)
+t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s)
 {
 	t_tab	*chunks;
 	int		i;
-	int		ideal_size;
 
-	ideal_size = 25;
 	chunks = malloc(sizeof(t_tab));
-	chunks->size = tab->size / ideal_size - 1;
-	if (chunks->size < 2)
-	{
-		chunks->size = 0;
-		chunks->tab = NULL;
-		return (chunks);
-	}
+	if (!chunks)
+		return (NULL);
+	if (ft_lstsize(s->values) <= 100)
+		chunks->size = 3;
+	else
+		chunks->size = 9;
 	chunks->tab = malloc(sizeof(int) * chunks->size);
 	if (!chunks->tab)
 		return (NULL);
 	i = 0;
 	while (i < chunks->size)
 	{
-		if (i * ideal_size + ideal_size >= tab->size)
-			chunks->tab[i] = tab->tab[tab->size - 1];
-		chunks->tab[i] = tab->tab[i * ideal_size + ideal_size];
+		chunks->tab[i] = tab->tab[tab->size / (chunks->size + 1) \
+			+ i * tab->size / (chunks->size + 1) - 1];
 		i++;
 	}
 	return (chunks);

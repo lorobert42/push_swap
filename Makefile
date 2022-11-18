@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+         #
+#    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/10/21 08:37:04 by lorobert         ###   ########.fr        #
+#    Updated: 2022/11/18 19:30:33 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ NAME	:=	push_swap
 
 SRCS	:=	push_swap.c \
 			ft_sort.c \
+			ft_basic_operations.c \
+			ft_advanced_operations.c \
 			ft_stack.c \
 			ft_math.c
 OBJS	:=	$(SRCS:.c=.o)

@@ -16,20 +16,20 @@
 # include "libft/libft.h"
 
 typedef struct s_tab {
-	int *tab;
-	int size;
-} t_tab;
+	int	*tab;
+	int	size;
+}	t_tab;
 
 typedef struct s_stack {
 	char	name;
 	t_list	*values;
-} t_stack;
+}	t_stack;
 
 void	ft_sort(t_stack *a, int len, t_tab *sorted);
 int		ft_get_c(t_list *a);
 int		ft_min(int a, int b);
 int		ft_get_min(t_list *a);
-int 	ft_get_max(t_list *a);
+int		ft_get_max(t_list *a);
 void	ft_del(void *content);
 void	ft_error(t_stack *a, t_tab *t);
 void	ft_swap(t_stack *s, int print);
@@ -39,10 +39,10 @@ void	ft_rotate(t_stack *s, int print);
 void	ft_rotate_both(t_stack *s1, t_stack *s2);
 void	ft_rrotate(t_stack *s, int print);
 void	ft_rrotate_both(t_stack *s1, t_stack *s2);
-int 	ft_find_position(int n, t_list *a);
+int		ft_find_position(int n, t_list *a);
 int		ft_find_rev_position(int n, t_list *a);
 int		ft_sorted_median(t_tab *tab);
-t_tab	*ft_sorted_chunks(t_tab *tab);
+t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s);
 int		ft_index(t_list *a, int value);
 int		ft_rev_index(t_list *a, int value);
 int		ft_index_limit(t_list *a, int value);
