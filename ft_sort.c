@@ -69,9 +69,10 @@ static int ft_is_pseudosorted(t_list *a)
 static void	ft_sort_large(t_stack *a, t_tab *sorted)
 {
 	t_stack	*b;
-	int 	median;
+	//int 	median;
 
-	median = ft_sorted_median(sorted);
+	(void)sorted;
+	//median = ft_sorted_median(sorted);
 	if (ft_is_sorted(a->values, '<'))
 		exit(0);
 	b = malloc(sizeof(t_stack));

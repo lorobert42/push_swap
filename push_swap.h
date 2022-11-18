@@ -31,7 +31,7 @@ int		ft_min(int a, int b);
 int		ft_get_min(t_list *a);
 int 	ft_get_max(t_list *a);
 void	ft_del(void *content);
-void	ft_error(t_stack *a);
+void	ft_error(t_stack *a, t_tab *t);
 void	ft_swap(t_stack *s, int print);
 void	ft_swap_both(t_stack *s1, t_stack *s2);
 void	ft_push(t_stack *s1, t_stack *s2);

@@ -73,7 +73,7 @@ static int	parse_string(char *s, t_list *a, t_tab *sorted)
 	return (i);
 }
 
-void	ft_error(t_stack *s)
+void	ft_error(t_stack *s, t_tab *t)
 {
 	write(2, "Error\n", 6);
 	if (s)
@@ -81,7 +81,23 @@ void	ft_error(t_stack *s)
 		ft_lstclear(&(s->values), &ft_del);
 		free(s);
 	}
+	if (t->tab)
+		free(t->tab);
 	exit(0);
+}
+
+int	ft_check_duplicates(t_tab *tab)
+{
+	int	i;
+
+	i = 0;
+	while (i < tab->size - 1)
+	{
+		if (tab->tab[i] == tab->tab[i + 1])
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -91,13 +107,13 @@ int	main(int argc, char **argv)
 	int		len;
 
 	if (argc == 1)
-		ft_error(NULL);
+		return (0);
 	a = malloc(sizeof(t_stack));
 	if (!a)
-		ft_error(NULL);
+		ft_error(NULL, &sorted);
 	a->values = ft_lstnew(NULL);
 	if (!a->values)
-		ft_error(NULL);
+		ft_error(NULL, &sorted);
 	a->name = 'a';
 	sorted.size = 0;
 	sorted.tab = NULL;
@@ -106,9 +122,12 @@ int	main(int argc, char **argv)
 	else
 		len = parse_args(argc, argv, a->values, &sorted);
 	if (!len)
-		ft_error(a);
+		ft_error(a, &sorted);
+	if (ft_check_duplicates(&sorted))
+		ft_error(a, &sorted);
 	ft_sort(a, len, &sorted);
 	ft_lstclear(&(a->values), &ft_del);
 	free(a);
+	free(sorted.tab);
 	return (0);
 }
