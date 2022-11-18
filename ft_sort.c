@@ -96,7 +96,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 
 	i = 0;
 	//ft_print_stack(a->values, b->values);
-	while (i < chunks->size && ft_get_min(a->values) < chunks->tab[i])
+	while (i < chunks->size)
 	{
 		while (ft_get_c(a->values) > chunks->tab[i])
 		{
