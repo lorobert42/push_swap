@@ -194,7 +194,7 @@ void	ft_del(void *content)
 
 void	ft_print_stack(t_list *a, t_list *b)
 {
-	int size;
+	int	size;
 	int	i;
 
 	if (ft_lstsize(a) >= ft_lstsize(b))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_math.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/10/27 15:19:51 by lorobert         ###   ########.fr       */
+/*   Created: 2022/11/18 17:43:28 by lorobert          #+#    #+#             */
+/*   Updated: 2022/11/18 17:43:28 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_min(int a, int b)
 
 int	ft_index_limit(t_list *a, int value)
 {
-	int 	index;
+	int	index;
 
 	index = 0;
 	while (a)
@@ -39,8 +39,8 @@ int	ft_index_limit(t_list *a, int value)
 int	ft_rev_index_limit(t_list *a, int value)
 {
 	t_list	*tmp;
-	int 	index;
-	int 	i;
+	int		index;
+	int		i;
 
 	tmp = a;
 	index = 0;
@@ -58,7 +58,7 @@ int	ft_rev_index_limit(t_list *a, int value)
 int	ft_index(t_list *a, int value)
 {
 	t_list	*tmp;
-	int 	index;
+	int		index;
 
 	tmp = a;
 	index = 0;
@@ -75,8 +75,8 @@ int	ft_index(t_list *a, int value)
 int	ft_rev_index(t_list *a, int value)
 {
 	t_list	*tmp;
-	int 	index;
-	int 	i;
+	int		index;
+	int		i;
 
 	tmp = a;
 	index = 0;
@@ -93,10 +93,10 @@ int	ft_rev_index(t_list *a, int value)
 
 int	ft_sorted_index(int n, t_tab *tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while ( i < tab->size)
+	while (i < tab->size)
 	{
 		if (tab->tab[i] == n)
 			return (i);
@@ -110,9 +110,9 @@ int	ft_sorted_median(t_tab *tab)
 	return (tab->tab[tab->size / 2]);
 }
 
+//TODO: use div instead of ideal_size
 t_tab	*ft_sorted_chunks(t_tab *tab)
 {
-	//TODO: use div instead of ideal_size
 	t_tab	*chunks;
 	int		i;
 	int		ideal_size;
