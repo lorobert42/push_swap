@@ -168,7 +168,7 @@ int ft_find_rev_position(int n, t_list *a)
 	if (n < ft_get_min(a))
 		return (ft_index(a, ft_get_max(a)) % ft_lstsize(a));
 	if (n > ft_get_max(a))
-		return (ft_index(a, ft_get_min(a)));
+		return ((ft_index(a, ft_get_min(a)) + 1) % ft_lstsize(a));
 	if (ft_get_c(a) < n && ft_get_c(ft_lstlast(a)) > n)
 		return (0);
 	pos = 1;
