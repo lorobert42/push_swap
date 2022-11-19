@@ -6,11 +6,12 @@
 #    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/11/18 19:30:33 by lorobert         ###   ########.fr        #
+#    Updated: 2022/11/19 14:01:03 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	push_swap
+NAMEB	:=	checker
 
 SRCS	:=	push_swap.c \
 			ft_sort.c \
@@ -43,6 +44,9 @@ $(NAME): $(OBJS) $(LIBS_TARGET)
 
 $(LIBS_TARGET):
 	make bonus -C $(@D)
+
+bonus: $(NAME) $(OBJSB) $(LIBS_TARGET)
+	$(CC) $(LDFLAGS) $(OBJSB) $(LDLIBS) -o $(NAMEB)
 
 clean:
 	for f in $(dir $(LIBS_TARGET)); do make -C $$f clean; done

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sort.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/10/27 15:19:51 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/19 10:17:52 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	chunks = ft_sorted_chunks(sorted, a);
 	if (!chunks)
 		ft_error(a, sorted);
-	//ft_printf("\n");
-	//ft_print_tab(sorted);
-	//ft_print_tab(chunks);
 	if (ft_is_sorted(a->values))
 		exit(0);
 	b = malloc(sizeof(t_stack));
@@ -95,7 +92,6 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	b->name = 'b';
 
 	i = 0;
-	//ft_print_stack(a->values, b->values);
 	while (i < chunks->size)
 	{
 		while (ft_get_c(a->values) > chunks->tab[i])
@@ -108,12 +104,12 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 		ft_push(b, a);
 		if (ft_get_min(a->values) >= chunks->tab[i])
 			i++;
-		//ft_print_stack(a->values, b->values);
 	}
-	//ft_print_stack(a->values, b->values);
 
 	while (ft_lstsize(a->values) > 3)
 	{
+		// if (ft_index(a->values, ft_get_min(a->values)) == 1)
+		// 	ft_swap(a, 1);
 		if (ft_index(a->values, ft_get_min(a->values)) && ft_index(a->values, ft_get_min(a->values)) <= ft_rev_index(a->values, ft_get_min(a->values)))
 			ft_rotate(a, 1);
 		else if (ft_index(a->values, ft_get_min(a->values)))
@@ -126,6 +122,8 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 
 	while (b->values)
 	{
+		if (ft_index(b->values, ft_get_max(b->values)) == 1)
+			ft_swap(b, 1);
 		if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
 			ft_rotate(b, 1);
 		else if (ft_index(b->values, ft_get_max(b->values)))

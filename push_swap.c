@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 12:39:58 by lorobert          #+#    #+#             */
-/*   Updated: 2022/10/26 14:54:48 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:04:49 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include "push_swap.h"
 
-static int	parse_args(int argc, char **argv, t_list *a, t_tab *sorted)
+int	parse_args(int argc, char **argv, t_list *a, t_tab *sorted)
 {
 	int	i;
 	int	tmp;
@@ -41,7 +41,7 @@ static int	parse_args(int argc, char **argv, t_list *a, t_tab *sorted)
 	return (i);
 }
 
-static int	parse_string(char *s, t_list *a, t_tab *sorted)
+int	parse_string(char *s, t_list *a, t_tab *sorted)
 {
 	int		i;
 	char	**strs;
