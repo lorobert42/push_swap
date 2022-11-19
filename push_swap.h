@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 12:58:16 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 14:09:53 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/19 15:34:27 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_print_stack(t_list *a, t_list *b);
 
 // Array manipulation
 t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s);
-int		ft_sorted_index(int n, t_tab *tab);
+int		ft_sorted_index(t_tab *tab, int n);
 void	ft_sort_tab(t_tab *tab);
 
 // Sorting

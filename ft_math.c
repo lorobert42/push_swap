@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:43:28 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/18 17:43:28 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/19 16:18:25 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,20 @@ t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s)
 		i++;
 	}
 	return (chunks);
+}
+
+int	ft_sorted_index(t_tab *tab, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < tab->size)
+	{
+		if (tab->tab[i] == n)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 void	ft_sort_tab(t_tab *tab)

@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 10:17:52 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/19 15:54:46 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	t_stack	*b;
 	t_tab	*chunks;
 	int		i;
+	int		n_down;
 
 	chunks = ft_sorted_chunks(sorted, a);
 	if (!chunks)
@@ -108,8 +109,6 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 
 	while (ft_lstsize(a->values) > 3)
 	{
-		// if (ft_index(a->values, ft_get_min(a->values)) == 1)
-		// 	ft_swap(a, 1);
 		if (ft_index(a->values, ft_get_min(a->values)) && ft_index(a->values, ft_get_min(a->values)) <= ft_rev_index(a->values, ft_get_min(a->values)))
 			ft_rotate(a, 1);
 		else if (ft_index(a->values, ft_get_min(a->values)))
@@ -120,17 +119,37 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 
 	ft_sort_3(a);
 
-	while (b->values)
+	n_down = 0;
+	while (b->values || n_down)
 	{
-		if (ft_index(b->values, ft_get_max(b->values)) == 1)
-			ft_swap(b, 1);
-		if (ft_index(b->values, ft_get_max(b->values)) && ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
-			ft_rotate(b, 1);
-		else if (ft_index(b->values, ft_get_max(b->values)))
-			ft_rrotate(b, 1);
-		else
+		if (b->values && ft_index(b->values, ft_get_max(b->values)) == 0 && (ft_sorted_index(sorted, ft_get_c(b->values)) == ft_sorted_index(sorted, ft_get_c(a->values)) - 1 || (ft_sorted_index(sorted, ft_get_c(b->values)) == 0 && !n_down)))
 			ft_push(a, b);
+		else if (!b->values && n_down)
+		{
+			ft_rrotate(a, 1);
+			n_down--;
+		}
+		else if (ft_get_max(b->values) < ft_get_c(ft_lstlast(a->values)) && n_down)
+		{
+			ft_rrotate(a, 1);
+			n_down--;
+		}
+		else if (n_down == 0 || ft_get_c(b->values) > ft_get_c(ft_lstlast(a->values)))
+		{
+			ft_push(a, b);
+			ft_rotate(a, 1);
+			n_down++;
+		}
+		else
+		{
+			if (ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
+				ft_rotate(b, 1);
+			else
+				ft_rrotate(b, 1);
+		}
 	}
+
+	//ft_printf("%d\n", n_down);
 
 	free(chunks->tab);
 	free(chunks);
