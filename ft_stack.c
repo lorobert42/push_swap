@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 15:08:56 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/20 13:00:48 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,19 @@ int	ft_get_c(t_list *a)
 void	ft_del(void *content)
 {
 	free(content);
+}
+
+t_stack	*ft_init_stack(char name)
+{
+	t_stack	*s;
+
+	s = malloc(sizeof(t_stack));
+	if (!s)
+		return (NULL);
+	s->name = name;
+	s->values = NULL;
+	s->size = 0;
+	return (s);
 }
 
 void	ft_print_stack(t_list *a, t_list *b)

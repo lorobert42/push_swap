@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 12:58:16 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 15:34:27 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/20 13:19:08 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ typedef struct s_tab {
 typedef struct s_stack {
 	char	name;
 	t_list	*values;
+	int		size;
 }	t_stack;
 
 // Parse args
-int		parse_args(int argc, char **argv, t_list *a, t_tab *sorted);
-int		parse_string(char *s, t_list *a, t_tab *sorted);
+int		parse_args(int argc, char **argv, t_list **a, t_tab *sorted);
+int		parse_string(char *s, t_list **a, t_tab *sorted);
 
 // Error management
 void	ft_error(t_stack *a, t_tab *t);
@@ -43,6 +44,7 @@ void	ft_rrotate(t_stack *s, int print);
 void	ft_rrotate_both(t_stack *s1, t_stack *s2);
 
 // Stack manipulation
+t_stack	*ft_init_stack(char name);
 int		ft_get_c(t_list *a);
 int		ft_get_min(t_list *a);
 int		ft_get_max(t_list *a);
@@ -54,7 +56,7 @@ int		ft_sorted_index(t_tab *tab, int n);
 void	ft_sort_tab(t_tab *tab);
 
 // Sorting
-void	ft_sort(t_stack *a, int len, t_tab *sorted);
+void	ft_sort(t_stack *a, t_tab *sorted);
 int		ft_find_position(int n, t_list *a);
 int		ft_find_rev_position(int n, t_list *a);
 int		ft_index(t_list *a, int value);
