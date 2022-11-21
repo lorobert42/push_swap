@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_advanced_operations.c                           :+:      :+:    :+:   */
+/*   ft_tab.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/18 19:27:36 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 11:23:55 by lorobert         ###   ########.fr       */
+/*   Created: 2022/11/21 11:52:35 by lorobert          #+#    #+#             */
+/*   Updated: 2022/11/21 12:02:42 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "push_swap.h"
 
-void	ft_swap_both(t_stack *s1, t_stack *s2, int print)
+t_tab	*ft_init_tab(void)
 {
-	ft_swap(s1, 0);
-	ft_swap(s2, 0);
-	if (print)
-		ft_printf("ss\n");
+	t_tab	*t;
+
+	t = malloc(sizeof(t_tab));
+	if (!t)
+		return (NULL);
+	t->size = 0;
+	t->tab = NULL;
+	return (t);
 }
 
-void	ft_rotate_both(t_stack *s1, t_stack *s2, int print)
+void	ft_clear_tab(t_tab *t)
 {
-	ft_rotate(s1, 0);
-	ft_rotate(s2, 0);
-	if (print)
-		ft_printf("rr\n");
-}
-
-void	ft_rrotate_both(t_stack *s1, t_stack *s2, int print)
-{
-	ft_rrotate(s1, 0);
-	ft_rrotate(s2, 0);
-	if (print)
-		ft_printf("rrr\n");
+	if (!t)
+		return ;
+	free(t->tab);
+	free(t);
 }

@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 09:41:32 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 11:27:58 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,12 @@ t_stack	*ft_init_stack(char name)
 	s->values = NULL;
 	s->size = 0;
 	return (s);
+}
+
+void	ft_clear_stack(t_stack *s)
+{
+	if (!s)
+		return ;
+	ft_lstclear(&(s->values), &ft_del);
+	free(s);
 }

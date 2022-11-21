@@ -6,11 +6,21 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:40:32 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 09:41:37 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 12:00:49 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int	ft_strslen(char **strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+		i++;
+	return (i);
+}
 
 void	ft_print_tab(t_tab *t)
 {
