@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 09:41:16 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:52:33 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,33 @@ static void	ft_sort_3(t_stack *a)
 		ft_rrotate(a, 1);
 }
 
-static void	ft_sort_large(t_stack *a, t_tab *sorted)
+void	ft_move_last_chunk(t_stack *a, t_stack *b)
 {
-	t_stack	*b;
-	t_tab	*chunks;
-	int		i;
-	int		n_down;
+	while (ft_lstsize(a->values) > 3)
+	{
+		if (ft_index(a->values, ft_get_min(a->values)) && \
+				ft_index(a->values, ft_get_min(a->values)) <= \
+				ft_rev_index(a->values, ft_get_min(a->values)))
+			ft_rotate(a, 1);
+		else if (ft_index(a->values, ft_get_min(a->values)))
+			ft_rrotate(a, 1);
+		else
+			ft_push(b, a);
+	}
+	ft_sort_3(a);
+}
 
-	chunks = ft_sorted_chunks(sorted, a);
-	if (!chunks)
-		ft_error(a, sorted);
-	if (ft_is_sorted(a->values))
-		exit(0);
-	b = malloc(sizeof(t_stack));
-	b->values = NULL;
-	b->name = 'b';
+void	ft_move_chunks(t_stack *a, t_stack *b, t_tab *chunks)
+{
+	int	i;
 
 	i = 0;
 	while (i < chunks->size)
 	{
 		while (ft_get_c(a->values) > chunks->tab[i])
 		{
-			if (ft_index_limit(a->values, chunks->tab[i]) <= ft_rev_index_limit(a->values, chunks->tab[i]))
+			if (ft_index_limit(a->values, chunks->tab[i]) <= \
+					ft_rev_index_limit(a->values, chunks->tab[i]))
 				ft_rotate(a, 1);
 			else
 				ft_rrotate(a, 1);
@@ -83,51 +88,45 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 		if (ft_get_min(a->values) >= chunks->tab[i])
 			i++;
 	}
+	ft_move_last_chunk(a, b);
+}
 
-	while (ft_lstsize(a->values) > 3)
-	{
-		if (ft_index(a->values, ft_get_min(a->values)) && ft_index(a->values, ft_get_min(a->values)) <= ft_rev_index(a->values, ft_get_min(a->values)))
-			ft_rotate(a, 1);
-		else if (ft_index(a->values, ft_get_min(a->values)))
-			ft_rrotate(a, 1);
-		else
-			ft_push(b, a);
-	}
+static void	ft_sort_large(t_stack *a, t_tab *sorted)
+{
+	t_stack	*b;
+	t_tab	*chunks;
+	int		n_down;
 
-	ft_sort_3(a);
-
+	if (ft_is_sorted(a->values))
+		exit(0);
+	chunks = ft_sorted_chunks(sorted, a);
+	if (!chunks)
+		ft_error(a, sorted);
+	b = ft_init_stack('b');
+	if (!b)
+		ft_error(a, sorted);
+	ft_move_chunks(a, b, chunks);
 	n_down = 0;
-	while (b->values || n_down)
+	while (b->size || n_down)
 	{
-		if (b->values && ft_index(b->values, ft_get_max(b->values)) == 0 && (ft_sorted_index(sorted, ft_get_c(b->values)) == ft_sorted_index(sorted, ft_get_c(a->values)) - 1 || (ft_sorted_index(sorted, ft_get_c(b->values)) == 0 && !n_down)))
+		if ((b->size && ft_sorted_index(sorted, ft_get_c(ft_lstlast(a->values))) == ft_sorted_index(sorted, ft_get_c(a->values)) - 1) || (!b->size && n_down))
+		{
+			ft_rrotate(a, 1);
+			n_down--;
+		}
+		else if (b->size && ft_index(b->values, ft_get_max(b->values)) == 0)
 			ft_push(a, b);
-		else if (!b->values && n_down)
-		{
-			ft_rrotate(a, 1);
-			n_down--;
-		}
-		else if (ft_get_max(b->values) < ft_get_c(ft_lstlast(a->values)) && n_down)
-		{
-			ft_rrotate(a, 1);
-			n_down--;
-		}
 		else if (n_down == 0 || ft_get_c(b->values) > ft_get_c(ft_lstlast(a->values)))
 		{
 			ft_push(a, b);
 			ft_rotate(a, 1);
 			n_down++;
 		}
+		else if (ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
+			ft_rotate(b, 1);
 		else
-		{
-			if (ft_index(b->values, ft_get_max(b->values)) <= ft_rev_index(b->values, ft_get_max(b->values)))
-				ft_rotate(b, 1);
-			else
-				ft_rrotate(b, 1);
-		}
+			ft_rrotate(b, 1);
 	}
-
-	//ft_printf("%d\n", n_down);
-
 	free(chunks->tab);
 	free(chunks);
 }
