@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 19:27:17 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/18 19:30:02 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 09:33:37 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	ft_push(t_stack *s1, t_stack *s2)
 		ft_lstadd_front(&(s1->values), s2->values);
 		s2->values = tmp;
 	}
+	s1->size++;
+	s2->size--;
 	ft_printf("p%c\n", s1->name);
 }
 
@@ -60,7 +62,6 @@ void	ft_rotate(t_stack *s, int print)
 	if (print)
 		ft_printf("r%c\n", s->name);
 }
-
 
 void	ft_rrotate(t_stack *s, int print)
 {

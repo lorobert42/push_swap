@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/20 13:07:05 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 09:41:16 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,50 +30,27 @@ static int	ft_is_sorted(t_list *a)
 	return (1);
 }
 
-void	ft_print_tab(t_tab *t)
-{
-	int	i;
-
-	i = 0;
-	while (i < t->size)
-	{
-		ft_printf("%d", t->tab[i]);
-		if (i < t->size - 1)
-			ft_printf(", ");
-		i++;
-	}
-	ft_printf("\n");
-}
-
 static void	ft_sort_3(t_stack *a)
 {
 	if (ft_is_sorted(a->values))
 		return ;
-	if (ft_get_c(a->values) < ft_get_c(a->values->next))
+	if (ft_get_c(a->values) == ft_get_min(a->values))
 	{
-		if (ft_get_c(a->values) < ft_get_c(ft_lstlast(a->values)))
-		{
-			ft_swap(a, 1);
-			ft_rotate(a, 1);
-		}
-		else
-			ft_rrotate(a, 1);
+		ft_swap(a, 1);
+		ft_rotate(a, 1);
 	}
+	else if (ft_get_c(a->values) == ft_get_max(a->values) && \
+			ft_get_c(a->values->next) == ft_get_min(a->values))
+		ft_rotate(a, 1);
+	else if (ft_get_c(a->values) == ft_get_max(a->values))
+	{
+		ft_swap(a, 1);
+		ft_rrotate(a, 1);
+	}
+	else if (ft_get_c(a->values->next) == ft_get_min(a->values))
+		ft_swap(a, 1);
 	else
-	{
-		if (ft_get_c(a->values) < ft_get_c(ft_lstlast(a->values)))
-			ft_swap(a, 1);
-		else
-		{
-			if (ft_get_c(a->values->next) < ft_get_c(ft_lstlast(a->values)))
-				ft_rotate(a, 1);
-			else
-			{
-				ft_swap(a, 1);
-				ft_rrotate(a, 1);
-			}
-		}
-	}
+		ft_rrotate(a, 1);
 }
 
 static void	ft_sort_large(t_stack *a, t_tab *sorted)
@@ -155,7 +132,7 @@ static void	ft_sort_large(t_stack *a, t_tab *sorted)
 	free(chunks);
 }
 
-static void	ft_sort_10(t_stack *a, t_tab *sorted)
+static void	ft_sort_small(t_stack *a, t_tab *sorted)
 {
 	t_stack	*b;
 
@@ -165,32 +142,20 @@ static void	ft_sort_10(t_stack *a, t_tab *sorted)
 	if (!b)
 		ft_error(a, sorted);
 	while (a->size > 3)
-	{
 		ft_push(b, a);
-		a->size--;
-		b->size++;
-	}
 	ft_sort_3(a);
-	while (b->values)
+	while (b->size)
 	{
-		while (ft_find_position(ft_get_c(b->values), a->values))
-		{
-			if (ft_find_position(ft_get_c(b->values), a->values) <= a->size / 2)
-				ft_rotate(a, 1);
-			else
-				ft_rrotate(a, 1);
-		}
-		ft_push(a, b);
-		b->size--;
-		a->size++;
-	}
-	while (ft_get_c(a->values) != ft_get_min(a->values))
-	{
-		if (ft_index(a->values, ft_get_min(a->values)) <= a->size / 2)
+		while (ft_find_position(ft_get_c(b->values), a->values) <= a->size / 2)
 			ft_rotate(a, 1);
-		else
+		while (ft_find_position(ft_get_c(b->values), a->values) > a->size / 2)
 			ft_rrotate(a, 1);
+		ft_push(a, b);
 	}
+	while (ft_index(a->values, ft_get_min(a->values)) <= a->size / 2)
+		ft_rotate(a, 1);
+	while (ft_index(a->values, ft_get_min(a->values)) > a->size / 2)
+		ft_rrotate(a, 1);
 }
 
 void	ft_sort(t_stack *a, t_tab *sorted)
@@ -206,7 +171,7 @@ void	ft_sort(t_stack *a, t_tab *sorted)
 	else if (a->size == 3)
 		return (ft_sort_3(a));
 	else if (a->size > 3 && a->size <= 10)
-		return (ft_sort_10(a, sorted));
+		return (ft_sort_small(a, sorted));
 	else
 		return (ft_sort_large(a, sorted));
 }
