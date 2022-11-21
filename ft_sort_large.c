@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:14:51 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 14:13:40 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:54:58 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_move_chunks(t_stack *a, t_stack *b, t_tab *chunks)
 	int	i;
 
 	i = 0;
-	while (i < chunks->size)
+	while (a->size > 3)
 	{
 		while (ft_get_c(a->list) > chunks->tab[i])
 		{
@@ -54,10 +54,11 @@ void	ft_move_chunks(t_stack *a, t_stack *b, t_tab *chunks)
 				ft_rrotate(a, 1);
 		}
 		ft_push(b, a, 1);
-		if (ft_get_min(a) >= chunks->tab[i])
+		if (a->size == 3 || ft_get_min(a) > chunks->tab[i])
 			i++;
 	}
-	ft_move_last_chunk(a, b);
+	ft_sort_3(a);
+	//ft_move_last_chunk(a, b);
 }
 
 void	ft_move_last_chunk(t_stack *a, t_stack *b)

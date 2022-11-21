@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:43:28 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 14:03:42 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 16:16:09 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,20 @@ t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s)
 	if (!chunks)
 		return (NULL);
 	if (ft_lstsize(s->list) <= 100)
-		chunks->size = 3;
+		chunks->size = 4;
 	else
-		chunks->size = 9;
+		chunks->size = 10;
 	chunks->tab = malloc(sizeof(int) * chunks->size);
 	if (!chunks->tab)
 		return (NULL);
 	i = 0;
-	while (i < chunks->size)
+	while (i < chunks->size - 1)
 	{
-		chunks->tab[i] = tab->tab[tab->size / (chunks->size + 1) \
-			+ i * tab->size / (chunks->size + 1) - 1];
+		chunks->tab[i] = tab->tab[tab->size / chunks->size + i * \
+			(tab->size / chunks->size) - 1];
 		i++;
 	}
+	chunks->tab[i] = tab->tab[tab->size - 4];
 	return (chunks);
 }
 
