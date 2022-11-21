@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 14:01:24 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 14:12:58 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:52:57 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ int	main(int argc, char **argv)
 	a = malloc(sizeof(t_stack));
 	if (!a)
 		ft_error(NULL, &sorted);
-	a->values = ft_lstnew(NULL);
-	if (!a->values)
+	a->list = ft_lstnew(NULL);
+	if (!a->list)
 		ft_error(NULL, &sorted);
 	a->name = 'a';
 	sorted.size = 0;
 	sorted.tab = NULL;
 	if (argc == 2 && ft_strchr(argv[1], ' '))
-		len = parse_string(argv[1], a->values, &sorted);
+		len = parse_string(argv[1], a->list, &sorted);
 	else
-		len = parse_args(argc, argv, a->values, &sorted);
+		len = parse_args(argc, argv, a->list, &sorted);
 	if (!len)
 		ft_error(a, &sorted);
 	if (ft_check_duplicates(&sorted))
@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 		ft_execute(instruction);
 		instruction = get_next_line(1);
 	}
-	ft_lstclear(&(a->values), &ft_del);
+	ft_lstclear(&(a->list), &ft_del);
 	free(a);
 	free(sorted.tab);
 	return (0);

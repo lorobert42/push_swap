@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 12:39:58 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 12:01:21 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:52:57 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_error(t_stack *s, t_tab *t)
 	write(2, "Error\n", 6);
 	if (s)
 	{
-		ft_lstclear(&(s->values), &ft_del);
+		ft_lstclear(&(s->list), &ft_del);
 		free(s);
 	}
 	if (t->tab)
@@ -106,9 +106,9 @@ int	main(int argc, char **argv)
 	if (!a)
 		ft_error(NULL, sorted);
 	if (argc == 2 && ft_strchr(argv[1], ' '))
-		a->size = parse_string(argv[1], &a->values, sorted);
+		a->size = parse_string(argv[1], &a->list, sorted);
 	else
-		a->size = parse_args(argc, argv, &a->values, sorted);
+		a->size = parse_args(argc, argv, &a->list, sorted);
 	if (!a->size)
 		ft_error(a, sorted);
 	if (ft_check_duplicates(sorted))

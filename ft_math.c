@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:43:28 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/19 16:18:25 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:03:42 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	ft_rev_index_limit(t_list *a, int value)
 	return (ft_lstsize(a) - index);
 }
 
-int	ft_index(t_list *a, int value)
+int	ft_index(t_stack *a, int value)
 {
 	t_list	*tmp;
 	int		index;
 
-	tmp = a;
+	tmp = a->list;
 	index = 0;
 	while (tmp)
 	{
@@ -91,7 +91,7 @@ t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s)
 	chunks = malloc(sizeof(t_tab));
 	if (!chunks)
 		return (NULL);
-	if (ft_lstsize(s->values) <= 100)
+	if (ft_lstsize(s->list) <= 100)
 		chunks->size = 3;
 	else
 		chunks->size = 9;

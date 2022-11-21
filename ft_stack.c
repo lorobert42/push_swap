@@ -6,19 +6,19 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 11:27:58 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:12:00 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "push_swap.h"
 
-int	ft_get_min(t_list *a)
+int	ft_get_min(t_stack *a)
 {
 	t_list	*tmp;
 	int		min;
 
-	tmp = a;
+	tmp = a->list;
 	min = ft_get_c(tmp);
 	while (tmp && tmp->next)
 	{
@@ -29,12 +29,12 @@ int	ft_get_min(t_list *a)
 	return (min);
 }
 
-int	ft_get_max(t_list *a)
+int	ft_get_max(t_stack *a)
 {
 	t_list	*tmp;
 	int		max;
 
-	tmp = a;
+	tmp = a->list;
 	max = ft_get_c(tmp);
 	while (tmp && tmp->next)
 	{
@@ -45,21 +45,21 @@ int	ft_get_max(t_list *a)
 	return (max);
 }
 
-int	ft_find_position(int n, t_list *a)
+int	ft_find_position(t_stack *a, int n)
 {
 	t_list	*tmp;
 	int		pos;
 
-	if (!a)
+	tmp = a->list;
+	if (!tmp)
 		return (0);
-	tmp = a;
 	if (ft_get_c(ft_lstlast(tmp)) < n && ft_get_c(tmp) > n)
 		return (0);
 	if (n < ft_get_min(a))
 		return (ft_index(a, ft_get_min(a)));
 	else if (n > ft_get_max(a))
 	{
-		if (ft_index(a, ft_get_max(a)) == ft_lstsize(a) - 1)
+		if (ft_index(a, ft_get_max(a)) == a->size - 1)
 			return (0);
 		return (ft_index(a, ft_get_max(a)) + 1);
 	}
@@ -92,7 +92,7 @@ t_stack	*ft_init_stack(char name)
 	if (!s)
 		return (NULL);
 	s->name = name;
-	s->values = NULL;
+	s->list = NULL;
 	s->size = 0;
 	return (s);
 }
@@ -101,6 +101,6 @@ void	ft_clear_stack(t_stack *s)
 {
 	if (!s)
 		return ;
-	ft_lstclear(&(s->values), &ft_del);
+	ft_lstclear(&(s->list), &ft_del);
 	free(s);
 }

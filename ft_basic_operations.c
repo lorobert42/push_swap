@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 19:27:17 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 09:33:37 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:52:57 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,50 @@ void	ft_swap(t_stack *s, int print)
 {
 	t_list	*tmp;
 
-	if (ft_lstsize(s->values) < 2)
+	if (ft_lstsize(s->list) < 2)
 		return ;
-	tmp = s->values;
-	s->values = s->values->next;
-	tmp->next = s->values->next;
-	s->values->next = tmp;
+	tmp = s->list;
+	s->list = s->list->next;
+	tmp->next = s->list->next;
+	s->list->next = tmp;
 	if (print)
 		ft_printf("s%c\n", s->name);
 }
 
-void	ft_push(t_stack *s1, t_stack *s2)
+void	ft_push(t_stack *s1, t_stack *s2, int print)
 {
 	t_list	*tmp;
 
-	if (!s2->values)
+	if (!s2->list)
 		return ;
-	if (!s1->values)
+	if (!s1->list)
 	{
-		s1->values = s2->values;
-		s2->values = s2->values->next;
-		s1->values->next = NULL;
+		s1->list = s2->list;
+		s2->list = s2->list->next;
+		s1->list->next = NULL;
 	}
 	else
 	{
-		tmp = s2->values->next;
-		ft_lstadd_front(&(s1->values), s2->values);
-		s2->values = tmp;
+		tmp = s2->list->next;
+		ft_lstadd_front(&(s1->list), s2->list);
+		s2->list = tmp;
 	}
 	s1->size++;
 	s2->size--;
-	ft_printf("p%c\n", s1->name);
+	if (print)
+		ft_printf("p%c\n", s1->name);
 }
 
 void	ft_rotate(t_stack *s, int print)
 {
 	t_list	*tmp;
 
-	if (ft_lstsize(s->values) < 2)
+	if (ft_lstsize(s->list) < 2)
 		return ;
-	ft_lstadd_back(&(s->values), s->values);
-	tmp = s->values->next;
-	s->values->next = NULL;
-	s->values = tmp;
+	ft_lstadd_back(&(s->list), s->list);
+	tmp = s->list->next;
+	s->list->next = NULL;
+	s->list = tmp;
 	if (print)
 		ft_printf("r%c\n", s->name);
 }
@@ -67,12 +68,12 @@ void	ft_rrotate(t_stack *s, int print)
 {
 	t_list	*tmp;
 
-	if (ft_lstsize(s->values) < 2)
+	if (ft_lstsize(s->list) < 2)
 		return ;
-	tmp = s->values;
-	while (tmp->next != ft_lstlast(s->values))
+	tmp = s->list;
+	while (tmp->next != ft_lstlast(s->list))
 		tmp = tmp->next;
-	ft_lstadd_front(&(s->values), ft_lstlast(s->values));
+	ft_lstadd_front(&(s->list), ft_lstlast(s->list));
 	tmp->next = NULL;
 	if (print)
 		ft_printf("rr%c\n", s->name);
