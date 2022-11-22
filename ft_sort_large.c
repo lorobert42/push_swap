@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:14:51 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/22 12:15:24 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:05:50 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	ft_sort_large(t_stack *a, t_tab *goal)
 		exit(0);
 	chunks = ft_chunks(a, goal);
 	if (!chunks)
-		ft_error(a, goal);
+		ft_error(a, NULL, goal, "Error\n");
 	b = ft_init_stack('b');
 	if (!b)
-		ft_error(a, goal);
+		ft_error(a, NULL, goal, "Error\n");
 	ft_move_chunks(a, b, goal, chunks);
 	down = 0;
 	while (b->size || down)

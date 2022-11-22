@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 12:58:16 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/22 12:21:13 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:05:12 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int		parse_args(int argc, char **argv, t_list **a, t_tab *goal);
 int		parse_string(char *s, t_list **a, t_tab *goal);
 
 // Error management
-void	ft_error(t_stack *a, t_tab *t);
+void	ft_error(t_stack *s1, t_stack *s2, t_tab *t, char *message);
+void	ft_clear_all(t_stack *s1, t_stack *s2, t_tab *t);
 int		ft_check_duplicates(t_tab *t);
 
 // Movements

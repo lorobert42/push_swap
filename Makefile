@@ -6,15 +6,14 @@
 #    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/11/22 12:17:21 by lorobert         ###   ########.fr        #
+#    Updated: 2022/11/22 14:15:50 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	push_swap
 NAMEB	:=	checker
 
-SRCS	:=	push_swap.c \
-			ft_sort.c \
+SRCS_BASE	:=	ft_sort.c \
 			ft_sort_small.c \
 			ft_sort_large.c \
 			ft_basic_operations.c \
@@ -24,8 +23,16 @@ SRCS	:=	push_swap.c \
 			ft_tab.c \
 			ft_chunk.c \
 			ft_math.c \
-			ft_strslen.c
+			ft_strslen.c \
+			ft_error.c \
+			ft_parse_arg.c
+SRCS	:=	push_swap.c \
+			$(SRCS_BASE)
 OBJS	:=	$(SRCS:.c=.o)
+SRCSB	:=	ft_checker.c \
+			get_next_line.c \
+			$(SRCS_BASE)
+OBJSB	:=	$(SRCSB:.c=.o)
 
 LIBS	:=	ft
 LIBS_TARGET	:=	libft/libft.a

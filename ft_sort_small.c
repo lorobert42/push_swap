@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:14:19 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/22 12:15:26 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:05:56 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_sort_small(t_stack *a, t_tab *sorted)
 		return ;
 	b = ft_init_stack('b');
 	if (!b)
-		ft_error(a, sorted);
+		ft_error(a, NULL, sorted, "Error\n");
 	while (a->size > 3)
 	{
 		if (ft_get_c(a->list) <= sorted->tab[sorted->size - 4])
