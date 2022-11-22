@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:14:19 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 14:11:51 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 12:15:26 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_sort_3(t_stack *a)
 void	ft_sort_small(t_stack *a, t_tab *sorted)
 {
 	t_stack	*b;
+	int		down;
 
 	if (ft_is_sorted(a))
 		return ;
@@ -45,19 +46,17 @@ void	ft_sort_small(t_stack *a, t_tab *sorted)
 	if (!b)
 		ft_error(a, sorted);
 	while (a->size > 3)
-		ft_push(b, a, 1);
-	ft_sort_3(a);
-	while (b->size)
 	{
-		while (ft_find_position(a, ft_get_c(b->list)) <= a->size / 2)
+		if (ft_get_c(a->list) <= sorted->tab[sorted->size - 4])
+			ft_push(b, a, 1);
+		else
 			ft_rotate(a, 1);
-		while (ft_find_position(a, ft_get_c(b->list)) > a->size / 2)
-			ft_rrotate(a, 1);
-		ft_push(a, b, 1);
 	}
-	while (ft_index(a, ft_get_min(a)) <= a->size / 2)
-		ft_rotate(a, 1);
-	while (ft_index(a, ft_get_min(a)) > a->size / 2)
-		ft_rrotate(a, 1);
+	ft_sort_3(a);
+	down = 0;
+	while (b->size || down)
+	{
+		ft_move_back(a, b, sorted, &down);
+	}
 	ft_clear_stack(b);
 }

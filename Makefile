@@ -6,7 +6,7 @@
 #    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/11/21 12:03:03 by lorobert         ###   ########.fr        #
+#    Updated: 2022/11/22 12:17:21 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,12 @@ SRCS	:=	push_swap.c \
 			ft_sort_large.c \
 			ft_basic_operations.c \
 			ft_advanced_operations.c \
+			ft_stack_init.c \
 			ft_stack.c \
 			ft_tab.c \
+			ft_chunk.c \
 			ft_math.c \
-			ft_utils.c
+			ft_strslen.c
 OBJS	:=	$(SRCS:.c=.o)
 
 LIBS	:=	ft

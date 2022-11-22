@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*   ft_stack_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/21 09:40:32 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 12:00:49 by lorobert         ###   ########.fr       */
+/*   Created: 2022/11/22 12:13:59 by lorobert          #+#    #+#             */
+/*   Updated: 2022/11/22 12:17:07 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "push_swap.h"
 
-int	ft_strslen(char **strs)
+t_stack	*ft_init_stack(char name)
 {
-	int	i;
+	t_stack	*s;
 
-	i = 0;
-	while (strs[i])
-		i++;
-	return (i);
+	s = malloc(sizeof(t_stack));
+	if (!s)
+		return (NULL);
+	s->name = name;
+	s->list = NULL;
+	s->size = 0;
+	return (s);
 }
 
-void	ft_print_tab(t_tab *t)
+void	ft_del(void *content)
 {
-	int	i;
+	free(content);
+}
 
-	i = 0;
-	while (i < t->size)
-	{
-		ft_printf("%d", t->tab[i]);
-		if (i < t->size - 1)
-			ft_printf(", ");
-		i++;
-	}
-	ft_printf("\n");
+void	ft_clear_stack(t_stack *s)
+{
+	if (!s)
+		return ;
+	ft_lstclear(&(s->list), &ft_del);
+	free(s);
 }
 
 void	ft_print_stack(t_list *a, t_list *b)

@@ -6,21 +6,21 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:43:28 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 16:16:09 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 12:15:32 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "push_swap.h"
 
-int	ft_index_limit(t_list *a, int value)
+int	ft_index_limit(t_list *a, int min, int max)
 {
 	int	index;
 
 	index = 0;
 	while (a)
 	{
-		if (ft_get_c(a) <= value)
+		if (ft_get_c(a) >= min && ft_get_c(a) <= max)
 			return (index);
 		a = a->next;
 		index++;
@@ -28,7 +28,7 @@ int	ft_index_limit(t_list *a, int value)
 	return (-1);
 }
 
-int	ft_rev_index_limit(t_list *a, int value)
+int	ft_rev_index_limit(t_list *a, int min, int max)
 {
 	t_list	*tmp;
 	int		index;
@@ -39,7 +39,7 @@ int	ft_rev_index_limit(t_list *a, int value)
 	i = 0;
 	while (tmp)
 	{
-		if (ft_get_c(tmp) <= value)
+		if (ft_get_c(tmp) >= min && ft_get_c(tmp) <= max)
 			index = i;
 		tmp = tmp->next;
 		i++;
@@ -81,65 +81,4 @@ int	ft_rev_index(t_list *a, int value)
 		i++;
 	}
 	return (ft_lstsize(a) - index);
-}
-
-t_tab	*ft_sorted_chunks(t_tab *tab, t_stack *s)
-{
-	t_tab	*chunks;
-	int		i;
-
-	chunks = malloc(sizeof(t_tab));
-	if (!chunks)
-		return (NULL);
-	if (ft_lstsize(s->list) <= 100)
-		chunks->size = 4;
-	else
-		chunks->size = 10;
-	chunks->tab = malloc(sizeof(int) * chunks->size);
-	if (!chunks->tab)
-		return (NULL);
-	i = 0;
-	while (i < chunks->size - 1)
-	{
-		chunks->tab[i] = tab->tab[tab->size / chunks->size + i * \
-			(tab->size / chunks->size) - 1];
-		i++;
-	}
-	chunks->tab[i] = tab->tab[tab->size - 4];
-	return (chunks);
-}
-
-int	ft_sorted_index(t_tab *tab, int n)
-{
-	int	i;
-
-	i = 0;
-	while (i < tab->size)
-	{
-		if (tab->tab[i] == n)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-void	ft_sort_tab(t_tab *tab)
-{
-	int	i;
-	int	j;
-	int	temp;
-
-	i = 1;
-	while (i < tab->size)
-	{
-		j = i;
-		while (j > 0 && tab->tab[j - 1] > tab->tab[j])
-		{
-			temp = tab->tab[j];
-			tab->tab[j] = tab->tab[j - 1];
-			tab->tab[j - 1] = temp;
-			j--;
-		}
-		i++;
-	}
 }

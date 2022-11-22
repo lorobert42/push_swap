@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:19:48 by lorobert          #+#    #+#             */
-/*   Updated: 2022/11/21 13:59:37 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/11/22 12:15:21 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,27 @@ void	ft_sort(t_stack *a, t_tab *goal)
 		return (ft_sort_small(a, goal));
 	else
 		return (ft_sort_large(a, goal));
+}
+
+void	ft_move_back(t_stack *a, t_stack *b, t_tab *sorted, int *n_down)
+{
+	if ((b->size && ft_sorted_index(sorted, ft_get_c(ft_lstlast(a->list))) == \
+			ft_sorted_index(sorted, ft_get_c(a->list)) - 1) || \
+			(!b->size && *n_down))
+	{
+		ft_rrotate(a, 1);
+		(*n_down)--;
+	}
+	else if (b->size && ft_index(b, ft_get_max(b)) == 0)
+		ft_push(a, b, 1);
+	else if (*n_down == 0 || ft_get_c(b->list) > ft_get_c(ft_lstlast(a->list)))
+	{
+		ft_push(a, b, 1);
+		ft_rotate(a, 1);
+		(*n_down)++;
+	}
+	else if (ft_index(b, ft_get_max(b)) <= ft_rev_index(b->list, ft_get_max(b)))
+		ft_rotate(b, 1);
+	else
+		ft_rrotate(b, 1);
 }
