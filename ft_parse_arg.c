@@ -39,13 +39,13 @@ int	parse_args(int argc, char **argv, t_list **a, t_tab *sorted)
 	{
 		content = malloc(sizeof(int));
 		*content = ft_atoi(argv[i + 1]);
-		if (!verif_overflow(*content, argv[i + 1]))
-			return (0);
 		if (!*a)
 			*a = ft_lstnew(content);
 		else
 			ft_lstadd_back(a, ft_lstnew(content));
 		sorted->tab[i] = *content;
+		if (!verif_overflow(*content, argv[i + 1]))
+			return (0);
 		i++;
 	}
 	ft_sort_tab(sorted);
@@ -65,30 +65,38 @@ static void	free_strs(char **strs)
 	free(strs);
 }
 
-int	parse_string(char *s, t_list **a, t_tab *sorted)
+static int	parse_strs(char **strs, t_list **a, t_tab *sorted)
 {
-	int		i;
-	char	**strs;
-	int		*content;
+	int	i;
+	int	*content;
 
-	strs = ft_split(s, ' ');
-	i = ft_strslen(strs);
-	sorted->tab = malloc(sizeof(int) * (i));
-	sorted->size = i;
 	i = 0;
 	while (strs[i])
 	{
 		content = malloc(sizeof(int));
 		*content = ft_atoi(strs[i]);
-		if (!verif_overflow(*content, strs[i]))
-			return (0);
 		if (!*a)
 			*a = ft_lstnew(content);
 		else
 			ft_lstadd_back(a, ft_lstnew(content));
 		sorted->tab[i] = *content;
+		if (!verif_overflow(*content, strs[i]))
+			return (0);
 		i++;
 	}
+	return (i);
+}
+
+int	parse_string(char *s, t_list **a, t_tab *sorted)
+{
+	int		i;
+	char	**strs;
+
+	strs = ft_split(s, ' ');
+	i = ft_strslen(strs);
+	sorted->tab = malloc(sizeof(int) * (i));
+	sorted->size = i;
+	i = parse_strs(strs, a, sorted);
 	ft_sort_tab(sorted);
 	free_strs(strs);
 	return (i);

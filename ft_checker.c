@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "push_swap.h"
-#include "get_next_line.h"
 
 int	ft_execute(char *command, t_stack *a, t_stack *b)
 {
@@ -63,7 +62,11 @@ static void	read_commands(t_stack *a, t_stack *b, t_tab *sorted)
 	while (command)
 	{
 		if (ft_execute(command, a, b))
+		{
+			free(command);
 			ft_error(a, b, sorted, "Error\n");
+		}
+		free(command);
 		command = get_next_line(1);
 	}
 }

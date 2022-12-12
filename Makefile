@@ -63,11 +63,11 @@ bonus: $(NAME) $(OBJSB) $(LIBS_TARGET)
 
 clean:
 	for f in $(dir $(LIBS_TARGET)); do make -C $$f clean; done
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(OBJSB)
 
 fclean: clean
 	for f in $(dir $(LIBS_TARGET)); do make -C $$f fclean; done
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(NAMEB)
 
 re:	fclean all
 
