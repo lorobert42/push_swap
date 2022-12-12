@@ -30,6 +30,7 @@ void	ft_clear_tab(t_tab *t)
 	if (!t)
 		return ;
 	free(t->tab);
+	t->tab = NULL;
 	free(t);
 }
 

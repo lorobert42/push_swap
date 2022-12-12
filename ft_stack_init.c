@@ -36,6 +36,8 @@ void	ft_clear_stack(t_stack *s)
 	if (!s)
 		return ;
 	ft_lstclear(&(s->list), &ft_del);
+	s->list = NULL;
+	s->size = 0;
 	free(s);
 }
 

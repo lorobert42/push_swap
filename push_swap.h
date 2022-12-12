@@ -15,6 +15,8 @@
 
 # include "libft/libft.h"
 
+# define BUFFER_SIZE 4
+
 typedef struct s_tab {
 	int	*tab;
 	int	size;
@@ -90,5 +92,6 @@ int		ft_rev_index_limit(t_list *l, int min, int max);
 int		ft_strslen(char **strs);
 int		ft_min(int a, int b);
 void	ft_del(void *content);
+char	*get_next_line(int fd);
 
 #endif

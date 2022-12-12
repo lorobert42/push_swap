@@ -3,95 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/09 00:15:03 by wleite            #+#    #+#             */
-/*   Updated: 2022/11/22 13:37:48 by lorobert         ###   ########.fr       */
+/*   Created: 2022/10/10 15:56:30 by lorobert          #+#    #+#             */
+/*   Updated: 2022/10/13 10:13:18 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
 #include "push_swap.h"
-#include "get_next_line.h"
 
-static void	free_ptr(char **ptr)
+static void	free_mem(char **p)
 {
-	free(*ptr);
-	*ptr = NULL;
+	if (p && *p)
+	{
+		free(*p);
+		*p = NULL;
+	}
 }
 
-static char	*extract_line(char **buffer_backup)
+static int	find_newline(char *str)
 {
-	int		i;
-	char	*line;
-	char	*temp_free;
+	int	i;
 
 	i = 0;
-	while ((*buffer_backup)[i] != '\0' && (*buffer_backup)[i] != '\n')
+	while (str[i] && str[i] != '\n')
 		i++;
-	temp_free = *buffer_backup;
-	line = ft_substr(temp_free, 0, i + 1);
-	*buffer_backup = ft_strdup(&(*buffer_backup)[i + 1]);
-	free_ptr(&temp_free);
-	return (line);
+	if (str[i] == '\n')
+		return (i);
+	return (-1);
 }
 
-static int	read_file(int fd, char **buffer, char **buffer_backup)
+static void	read_until_line(int fd, char **remainder, char **tmp)
 {
-	int		bytes_read;
-	char	*temp_free;
+	int		len;
+	char	*buffer;
 
-	bytes_read = 1;
-	while (!ft_strchr(*buffer_backup, '\n') && bytes_read)
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return ;
+	len = 1;
+	while (len)
 	{
-		bytes_read = read(fd, *buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
-			return (bytes_read);
-		(*buffer)[bytes_read] = '\0';
-		temp_free = *buffer_backup;
-		*buffer_backup = ft_strjoin(temp_free, *buffer);
-		free_ptr(&temp_free);
+		len = read(fd, buffer, BUFFER_SIZE);
+		if (len <= 0)
+			break ;
+		buffer[len] = '\0';
+		if (!*remainder)
+			*remainder = ft_strdup(buffer);
+		else
+		{
+			*tmp = ft_strjoin(*remainder, buffer);
+			free_mem(remainder);
+			*remainder = *tmp;
+		}
+		if (find_newline(buffer) != -1)
+			break ;
 	}
-	return (bytes_read);
+	free_mem(&buffer);
 }
 
-static char	*get_line(int fd, char **buffer, char **buffer_backup)
+static char	*clean_line(char **rest, char **tmp)
 {
-	int		bytes_read;
-	char	*temp_free;
+	int		index;
+	char	*clean_line;
 
-	if (ft_strchr(*buffer_backup, '\n'))
-		return (extract_line(buffer_backup));
-	bytes_read = read_file(fd, buffer, buffer_backup);
-	if ((bytes_read == 0 || bytes_read == -1) && !**buffer_backup)
+	index = find_newline(*rest);
+	if (index == -1)
 	{
-		free_ptr(buffer_backup);
-		return (NULL);
+		clean_line = ft_strdup(*rest);
+		free_mem(rest);
+		return (clean_line);
 	}
-	if (ft_strchr(*buffer_backup, '\n'))
-		return (extract_line(buffer_backup));
-	if (!ft_strchr(*buffer_backup, '\n') && **buffer_backup)
-	{
-		temp_free = ft_strdup(*buffer_backup);
-		free_ptr(buffer_backup);
-		return (temp_free);
-	}
-	return (NULL);
+	clean_line = ft_substr(*rest, 0, index + 1);
+	*tmp = ft_substr(*rest, index + 1, ft_strlen(*rest) - index);
+	free_mem(rest);
+	*rest = *tmp;
+	return (clean_line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer_backup[OPEN_MAX + 1];
-	char			*buffer;
-	char			*result;
+	static char	*remainder = NULL;
+	char		*line;
+	char		*tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+	if (fd < 0 || !BUFFER_SIZE)
 		return (NULL);
-	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!buffer)
+	read_until_line(fd, &remainder, &tmp);
+	if (!remainder || !remainder[0])
+	{
+		free_mem(&remainder);
 		return (NULL);
-	if (!buffer_backup[fd])
-		buffer_backup[fd] = ft_strdup("");
-	result = get_line(fd, &buffer, &buffer_backup[fd]);
-	free_ptr(&buffer);
-	return (result);
+	}
+	line = clean_line(&remainder, &tmp);
+	if (!line)
+	{
+		free_mem(&remainder);
+		return (NULL);
+	}
+	return (line);
 }
