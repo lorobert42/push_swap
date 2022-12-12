@@ -70,7 +70,7 @@ OBJS	:=	$(SRCS:.c=.o)
 OBJSB	:=	$(SRCSB:.c=.o)
 
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror -g
+CFLAGS	:=	-Wall -Wextra -Werror
 
 RM		:=	rm -f
 

@@ -89,7 +89,7 @@ int	main(int argc, char **argv)
 	if (ft_check_duplicates(sorted))
 		ft_error(a, b, sorted, "Error\n");
 	read_commands(a, b, sorted);
-	if (ft_is_sorted(a))
+	if (ft_is_sorted(a) && b->size == 0)
 		ft_printf("OK\n");
 	else
 		ft_error(a, b, sorted, "KO\n");
